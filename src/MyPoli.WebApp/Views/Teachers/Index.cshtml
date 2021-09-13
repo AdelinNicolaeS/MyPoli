@@ -1,0 +1,138 @@
+﻿@inject MyPoli.Common.DTOs.CurrentUserDto CurrentUser
+@model MyPoli.BusinessLogic.Models.PaginatedList<MyPoli.Entities.Teacher>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>All teachers</h1>
+
+@if (CurrentUser.Roles.Contains("Secretary"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-outline-primary">Create New</a>
+        <a asp-action="Index" class="btn btn-outline-primary">Back to Full List</a>
+    </p>
+}
+else
+{
+    <p>
+        <a asp-action="Index" class="btn btn-outline-primary">Back to Full List</a>
+    </p>
+}
+
+@using (Html.BeginForm())
+{
+    <p>
+        Search: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
+<table class="table table-striped table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Surname", "Index", new { sortOrder = ViewBag.LastNameSort })
+            </th>
+            <th>
+                @Html.ActionLink("Forename", "Index", new { sortOrder = ViewBag.FirstNameSort })
+            </th>
+            <th>
+                @Html.ActionLink("Phone", "Index", new { sortOrder = ViewBag.PhoneSort })
+            </th>
+            <th>
+                @Html.ActionLink("Email", "Index", new { sortOrder = ViewBag.EmailSort })
+            </th>
+            <th>
+                @Html.ActionLink("Nationality", "Index", new { sortOrder = ViewBag.NationalitySort })
+            </th>
+            @*<th>
+                    @Html.ActionLink("Salary", "Index", new { sortOrder = ViewBag.SalarySort })
+                </th>
+                <th>
+                    @Html.ActionLink("Experience", "Index", new { sortOrder = ViewBag.ExperienceSort })
+                </th>*@
+            @if (CurrentUser.Roles.Contains("Secretary"))
+            {
+            <th></th>
+            }
+
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Person.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Person.FirstName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Person.Phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Person.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Person.Nationality.Name)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Salary)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Experience)
+                    </td>*@
+                
+                    @if (CurrentUser.Roles.Contains("Secretary"))
+                    {
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+                    }
+                    @*else if (CurrentUser.Roles.Contains("Teacher") && CurrentUser.Id == item.Id)
+                    {
+
+                        <a asp-action="EditYourself" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+
+                    }*@
+
+                
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/sort-table.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+}
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-secondary btn-sm active @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-secondary btn-sm active @nextDisabled">
+    Next
+</a>

@@ -1,0 +1,63 @@
+﻿@model MyPoli.BusinessLogic.Models.GradeVM
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Grade</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdSubject" />
+            <input type="hidden" asp-for="IdStudent" />
+            <input type="hidden" asp-for="IdGroup" />
+            <div class="form-group">
+                <label asp-for="IdStudent" class="control-label">Student</label>
+                <select asp-for="IdStudent" class="form-control" disabled asp-items="Model.StudentIds"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdGroup" class="control-label">Group</label>
+                <select asp-for="IdGroup" class="form-control" disabled asp-items="Model.GroupIds"></select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IdSubject" class="control-label">Subject</label>
+                <select asp-for="IdSubject" class="form-control" disabled asp-items="Model.SubjectIds"></select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="GradeValue" class="control-label">New Grade</label>
+                @*<input asp-for="GradeValue" class="form-control" />*@
+                <select asp-for="GradeValue" class="form-control">
+                    <option> Select Grade </option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                </select>
+                <span asp-validation-for="GradeValue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-primary">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

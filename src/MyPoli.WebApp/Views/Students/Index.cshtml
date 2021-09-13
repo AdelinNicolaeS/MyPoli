@@ -1,0 +1,205 @@
+﻿@*@model IEnumerable<MyPoli.Entities.Student>*@
+@model MyPoli.BusinessLogic.Models.PaginatedList<MyPoli.Entities.Student>
+@inject MyPoli.Common.DTOs.CurrentUserDto CurrentUser
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>All students</h1>
+
+@if (CurrentUser.Roles.Contains("Secretary"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-outline-primary">Create New</a>
+        <a asp-action="Index" class="btn btn-outline-primary">Back to Full List</a>
+    </p>
+}
+else
+{
+    <p>
+        <a asp-action="Index" class="btn btn-outline-primary">Back to Full List</a>
+    </p>
+}
+
+@using (Html.BeginForm())
+{
+    <p>
+        Search: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
+@*@using (Html.BeginForm())
+    {
+        <p>
+            Find by group: @Html.TextBox("SearchString")
+            <input type="submit" value="Search" />
+        </p>
+    }*@
+<table class="table table-striped table-hover table-bordered">
+    <thead>
+        <tr>
+
+            <th>
+
+                @Html.ActionLink("Surname", "Index", new { sortOrder = ViewBag.LastNameSort })
+                @*<a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Last Name</a>*@
+
+            </th>
+            <th>
+
+                @Html.ActionLink("Forename", "Index", new { sortOrder = ViewBag.FirstNameSort })
+            </th>
+            <th>
+                @Html.ActionLink("Email", "Index", new { sortOrder = ViewBag.EmailSort })
+            </th>
+            <th>
+                @Html.ActionLink("Nationality", "Index", new { sortOrder = ViewBag.NationalitySort })
+            </th>
+            @*<th>
+                @Html.ActionLink("Start Date", "Index", new { sortOrder = ViewBag.StartDateSort })
+            </th>
+            <th>
+                @Html.ActionLink("End Date", "Index", new { sortOrder = ViewBag.EndDateSort })
+            </th>*@
+            <th>
+                @Html.ActionLink("Group", "Index", new { sortOrder = ViewBag.GroupSort })
+
+            </th>
+
+            <th>
+                @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.StatusSort })
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            if (item.Status.Name == "exmatriculat")
+            {
+                <tr class="table-danger">
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Person.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Person.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Person.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Person.Nationality.Name)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Group.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status.Name)
+                    </td>
+                    <td>
+                        @if (CurrentUser.Roles.Contains("Secretary"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                            
+                        }
+                        else if (CurrentUser.Roles.Contains("Student"))
+                        {
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Details</a>
+                            if (CurrentUser.Id == item.Id)
+                            {
+                                <a asp-action="EditYourself" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
+                                <a asp-action="Catalog" asp-route-id="@item.Id" class="btn btn-sm btn-info">Catalog</a>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Person.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Person.FirstName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Person.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Person.Nationality.Name)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Group.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status.Name)
+                    </td>
+                    <td>
+                        @if (CurrentUser.Roles.Contains("Student"))
+                        {
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Details</a>
+                            if (CurrentUser.Id == item.Id)
+                            {
+                                <a asp-action="EditYourself" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
+                                <a asp-action="Catalog" asp-route-id="@item.Id" class="btn btn-sm btn-info">Catalog</a>
+                            }
+                        }
+                        else if (CurrentUser.Roles.Contains("Secretary"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                            
+                        }
+                    </td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/sort-table.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+}
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-secondary text-right btn-sm active @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-secondary text-right btn-sm active @nextDisabled">
+    Next
+</a>

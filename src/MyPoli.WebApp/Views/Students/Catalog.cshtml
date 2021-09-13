@@ -1,0 +1,72 @@
+﻿@*@model IEnumerable<MyPoli.Entities.Grade>*@
+@*@model List<MyPoli.Entities.Grade>*@
+@model MyPoli.BusinessLogic.Models.PaginatedList<MyPoli.Entities.Grade>
+@{
+    ViewData["Title"] = "Catalog";
+}
+<h1>Catalog</h1>
+
+@using (Html.BeginForm())
+{
+    <p>
+        Search: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
+
+<table class="table table-hover table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Subject", "Catalog", new { sortOrder = ViewBag.SubjectNameSort })
+            </th>
+            <th>
+                @Html.ActionLink("Grade", "Catalog", new { sortOrder = ViewBag.GradeSort })
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.StudentSubject.Subject.Name
+                </td>
+                <td>
+                    @item.GradeValue
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-primary float-right">Home</a>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/sort-table.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+}
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-secondary btn-sm active @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-secondary btn-sm active @nextDisabled">
+    Next
+</a>

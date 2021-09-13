@@ -1,0 +1,108 @@
+﻿@model MyPoli.Entities.Teacher
+@inject MyPoli.Common.DTOs.CurrentUserDto CurrentUser
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Teacher</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Forename
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Person.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            Surname
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Person.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Person.Address)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Person.Address)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Person.Birthday)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Person.Birthday.ToString("dd/MM/yyy")
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Person.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Person.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Person.Gender)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Person.Gender.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Person.Nationality)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Person.Nationality.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Experience
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Experience)
+        </dd>
+        <dt class="col-sm-2">
+            Salary
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Salary)
+        </dd>
+        <dt class="col-sm-2">
+            Subjects:
+        </dt>
+        @foreach (var subject in Model.SubjectTeachers.Select(st => st.Subject).Where(s => !s.IsDeleted).OrderBy(s => s.Name))
+        {
+            <dd class="col-sm-10">
+                <a asp-controller="Subjects" asp-action="Details" asp-route-id="@subject.Id">@subject.Name</a>
+            </dd>
+            <dt class="col-sm-2">
+
+            </dt>
+        }
+        <dt class="col-sm-10">
+
+        </dt>
+        <dt class="col-sm-2">
+            Groups:
+        </dt>
+        @foreach (var group in Model.TeacherGroups.Select(tg => tg.IdGroupNavigation).OrderBy(g => g.Name))
+            if (!group.IsDeleted)
+            {
+                <dd class="col-sm-10">
+                    <a asp-controller="Groups" asp-action="Details" asp-route-id="@group.Id">@group.Name</a>
+                </dd>
+                <dt class="col-sm-2">
+
+                </dt>
+            }
+
+    </dl>
+</div>
+<div>
+    @if (CurrentUser.Roles.Contains("Secretary"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    }
+    else if (CurrentUser.Roles.Contains("Teacher") && Model.Id == CurrentUser.Id)
+    {
+        <a asp-action="EditYourself" class="btn btn-primary">Edit</a>
+    }
+    <a asp-action="Index" class="btn btn-primary">Back to List</a>
+</div>

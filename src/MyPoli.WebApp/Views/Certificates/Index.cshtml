@@ -1,0 +1,106 @@
+﻿@*@model IEnumerable<MyPoli.Entities.Certificate>*@
+@model MyPoli.BusinessLogic.Models.PaginatedList<MyPoli.Entities.Certificate>
+@inject MyPoli.Common.DTOs.CurrentUserDto CurrentUser
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>All certificates</h1>
+
+@if (CurrentUser.Roles.Contains("Student"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-outline-primary">Create New</a>
+        <a asp-action="Index" class="btn btn-outline-primary">Back to Full List</a>
+    </p>
+}
+else
+{
+    <p>
+        <a asp-action="Index" class="btn btn-outline-primary">Back to Full List</a>
+    </p>
+}
+@using (Html.BeginForm())
+{
+    <p>
+        Search: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+
+    </p>
+}
+
+<table class="table table-striped table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Student)*@
+                @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSort })
+            </th>
+            <th>
+                @Html.ActionLink("Group", "Index", new { sortOrder = ViewBag.GroupSort })
+            </th>
+            <th>
+                @Html.ActionLink("Reason", "Index", new { sortOrder = ViewBag.ReasonSort })
+            </th>
+            <th>
+                @Html.ActionLink("Date", "Index", new { sortOrder = ViewBag.DateSort })
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Student.Person.FirstName @item.Student.Person.LastName
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Student.Group.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Reason)
+                </td>
+                <td>
+                    @item.Date.ToString("dd.MM.yyy")
+                </td>
+                <td>
+
+                    <a asp-action="DownloadCertificate" class="btn btn-sm btn-primary active" asp-route-id="@item.Id">Download</a>
+                    <a asp-action="Delete" class="btn btn-sm btn-primary active" asp-route-id="@item.Id">Delete</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@*<button onclick="myFunction()">Try it</button>*@
+
+@section Scripts {
+    <script>
+        function myFunction() {
+            alert("The document was downloaded successfully!\nCheck the Downloads folders");
+        }
+    </script>
+}
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-secondary btn-sm active @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-secondary btn-sm active @nextDisabled">
+    Next
+</a>

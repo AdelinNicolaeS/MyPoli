@@ -1,0 +1,84 @@
+﻿@*@model IEnumerable<MyPoli.Entities.Grade>*@
+@inject MyPoli.Common.DTOs.CurrentUserDto CurrentUser
+@model MyPoli.BusinessLogic.Models.PaginatedList<MyPoli.Entities.Grade>
+
+@{
+    ViewData["Title"] = "Archive";
+}
+
+<h1>Archive</h1>
+
+
+<p>
+        <a asp-action="Archive" class="btn btn-outline-success">Back to Full List</a>
+</p>
+
+
+@using (Html.BeginForm())
+{
+    <p>
+        Search: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
+
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Subject", "Archive", new { sortOrder = ViewBag.SubjectSort })
+            </th>
+            <th>
+                @Html.ActionLink("Name", "Archive", new { sortOrder = ViewBag.NameSort })
+            </th>
+            <th>
+                @Html.ActionLink("Grade", "Archive", new { sortOrder = ViewBag.GradeSort })
+            </th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudentSubject.Subject.Name)
+                </td>
+                <td>
+                    @item.StudentSubject.Student.Person.FirstName @item.StudentSubject.Student.Person.LastName
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GradeValue)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/sort-table.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+}
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Archive"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-secondary btn-sm active @prevDisabled">
+    Previous
+</a>
+<a asp-action="Archive"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-secondary btn-sm active @nextDisabled">
+    Next
+</a>

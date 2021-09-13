@@ -1,0 +1,70 @@
+﻿@model MyPoli.BusinessLogic.Models.ThesisEditVM
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Thesis</h4>
+<hr />
+<div class="row">
+    <div class="col-md-3">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="StudentId" class="control-label">Student</label>
+                <select asp-for="StudentId" class="form-control" asp-items="Model.StudentIds" disabled>Student</select>
+                <span asp-validation-for="StudentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TeacherId" class="control-label">Teacher</label>
+                <select asp-for="TeacherId" class="form-control" asp-items="Model.TeacherIds">Teacher</select>
+                <span asp-validation-for="TeacherId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <a asp-action="ViewThesis" target="_blank" asp-route-id="@Model.Id">Current Content</a>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="Content" class="form-label" for="customFile">Change Content</label>
+                <input asp-for="Content" type="file" accept="application/pdf" class="form-control-file" id="customFile" />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+            @*<div>
+                <embed src='@Url.Action("ViewThesis", "Theses", new { Id =  @Model.Id})' width="1200" height="800" />
+            </div>*@
+        </form>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-8">
+        
+            <embed src='@Url.Action("ViewThesis", "Theses", new { Id =  @Model.Id})' width="800" height="600" />
+        
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index"class="btn btn-primary">Back to List</a>
+</div>
+

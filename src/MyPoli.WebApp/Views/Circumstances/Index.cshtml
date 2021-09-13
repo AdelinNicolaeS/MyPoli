@@ -1,0 +1,140 @@
+﻿@*@model IEnumerable<MyPoli.Entities.Circumstance>*@
+@model MyPoli.BusinessLogic.Models.PaginatedList<MyPoli.Entities.Circumstance>
+@inject MyPoli.Common.DTOs.CurrentUserDto CurrentUser
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>All circumstances</h1>
+
+
+@if (CurrentUser.Roles.Contains("Student"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-outline-primary">Create New</a>
+        <a asp-action="Index" class="btn btn-outline-primary">Back to Full List</a>
+    </p>
+}
+else
+{
+    <p>
+        <a asp-action="Index" class="btn btn-outline-primary">Back to Full List</a>
+    </p>
+}
+@using (Html.BeginForm())
+{
+    <p>
+        Search: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
+<table class="table table-hover table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Student", "Index", new { sortOrder = ViewBag.NameSort })
+            </th>
+            <th>
+                @Html.ActionLink("Description", "Index", new { sortOrder = ViewBag.DescriptionSort })
+            </th>
+            <th>
+                @Html.ActionLink("Start Date", "Index", new { sortOrder = ViewBag.StartDateSort })
+            </th>
+            <th>
+                @Html.ActionLink("End Date", "Index", new { sortOrder = ViewBag.EndDateSort })
+            </th>
+            <th>
+                @Html.ActionLink("Accepted", "Index", new { sortOrder = ViewBag.AcceptedSort })
+            </th>
+            @if (!CurrentUser.Roles.Contains("Teacher"))
+            {
+            <th></th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            if (item.Accepted)
+            {
+                <tr class="table-success">
+                    <td>
+                        @item.Student.Person.FirstName @item.Student.Person.LastName
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @item.StartDate.ToString("dd/MM/yyy")
+                    </td>
+                    <td>
+                        @item.EndDate.ToString("dd/MM/yyy")
+                    </td>
+                    <td>
+                        @item.Accepted
+                    </td>
+                    @if (CurrentUser.Roles.Contains("Student") || CurrentUser.Roles.Contains("Secretary"))
+                    {
+                        <td>
+
+                            <a asp-action="Edit" class="btn btn-primary btn-sm" asp-route-id="@item.Id">Edit</a>
+                            <a asp-action="Delete" class="btn btn-danger btn-sm" asp-route-id="@item.Id">Delete</a>
+
+                        </td>
+                    }
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td>
+                        @item.Student.Person.FirstName @item.Student.Person.LastName
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @item.StartDate.ToString("dd/MM/yyy")
+                    </td>
+                    <td>
+                        @item.EndDate.ToString("dd/MM/yyy")
+                    </td>
+                    <td>
+                        @item.Accepted
+                    </td>
+                    @if (!CurrentUser.Roles.Contains("Teacher"))
+                    {
+                        <td>
+                            @if (CurrentUser.Roles.Contains("Student") || CurrentUser.Roles.Contains("Secretary"))
+                            {
+                                <a asp-action="Edit" class="btn btn-primary btn-sm" asp-route-id="@item.Id">Edit</a>
+                                <a asp-action="Delete" class="btn btn-danger btn-sm" asp-route-id="@item.Id">Delete</a>
+                            }
+                            @if (CurrentUser.Roles.Contains("Secretary"))
+                            {<a asp-action="Accept" class="btn btn-primary btn-sm" asp-route-id="@item.Id">Accept</a>}
+                        </td>
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-secondary btn-sm active @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-secondary btn-sm active @nextDisabled">
+    Next
+</a>

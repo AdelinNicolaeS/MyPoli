@@ -1,0 +1,110 @@
+﻿@inject MyPoli.Common.DTOs.CurrentUserDto CurrentUser
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MyPoli</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/MyStyle.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar  navbar-expand-sm navbar-toggleable-sm navbar-light red border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" href="https://upb.ro/" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Go to the official site">
+                    <img src="https://upload.wikimedia.org/wikipedia/ro/thumb/5/51/Logo_Universitatea_Politehnica_din_Bucure%C8%99ti.svg/1024px-Logo_Universitatea_Politehnica_din_Bucure%C8%99ti.svg.png" width="30" height="30" alt="">
+                </a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MyPoli</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                        <li>
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="FAQ">FAQ</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    @if (CurrentUser.IsAuthenticated)
+                    {
+
+                        <div class="dropdown dropright">
+
+                            <button type="button" class="btn btn-new" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @if (CurrentUser.Roles.Contains("Student"))
+                                {
+                                    <div><i class="fas fa-user-graduate"></i> @CurrentUser.FirstName @CurrentUser.LastName</div>
+
+                                }
+                                else if (CurrentUser.Roles.Contains("Teacher"))
+                                {
+                                    <div><i class="fas fa-chalkboard-teacher"></i> @CurrentUser.FirstName @CurrentUser.LastName</div>
+                                }
+                                else
+                                {
+                                    <div><i class="fas fa-user-shield"></i> @CurrentUser.FirstName @CurrentUser.LastName</div>
+                                }
+
+                            </button>
+                            <div class="dropdown-menu">
+                                @*<a class="dropdown-item" asp-controller="Students" asp-action="Index">See Students</a>
+                                    <a class="dropdown-item" asp-controller="Subjects" asp-action="Index">See Subjects</a>
+                                    <a class="dropdown-item" asp-controller="Teachers" asp-action="Index">See Teachers</a>
+                                    <a class="dropdown-item" asp-controller="Groups" asp-action="Index">See Groups</a>
+                                    <a class="dropdown-item" asp-controller="Grades" asp-action="Index">See Grades</a>
+                                    <a class="dropdown-item" asp-controller="Certificates" asp-action="Index">See Certificates</a>
+                                    <a class="dropdown-item" asp-controller="Theses" asp-action="Index">See Theses</a>
+                                    <a class="dropdown-item" asp-controller="Circumstances" asp-action="Index">See Circumstances</a>*@
+                                <a class="dropdown-item" asp-controller="UserAccount" asp-action="ChangePassword">
+                                    <i class="fas fa-unlock-alt"></i> Change password
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" asp-controller="UserAccount" asp-action="Logout">
+                                    <i class="fas fa-sign-out-alt"></i>Log out
+                                </a>
+                            </div>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <a asp-controller="UserAccount" asp-action="Login" class="btn btn-light">
+                            Log in
+                            <i class="fas fa-sign-in-alt"></i>
+                        </a>
+
+
+                    }
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2021 - MyPoli - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/668fdc6faf.js" crossorigin="anonymous"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

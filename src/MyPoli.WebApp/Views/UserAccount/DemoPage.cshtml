@@ -1,0 +1,14 @@
+﻿@model List<MyPoli.Common.DTOs.ListItemModel<string, Guid>>
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1>Login</h1>
+
+<h4>LoginVm</h4>
+<hr />
+<div class="form-group"></div>
+<div class="row">
+    <label class="control-label">User</label>
+    <select class="form-control" asp-items="@(new SelectList(Model, "Value", "Text"))"></select>
+</div>

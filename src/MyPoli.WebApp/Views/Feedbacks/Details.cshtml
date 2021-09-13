@@ -1,0 +1,67 @@
+﻿@model MyPoli.Entities.Feedback
+@inject MyPoli.Common.DTOs.CurrentUserDto CurrentUser
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Feedback</h4>
+    <hr />
+    <dl class="row">
+        @if (!CurrentUser.Roles.Contains("Teacher"))
+        {
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.StudentSubject.Student)
+            </dt>
+            <dd class="col-sm-9">
+                @Model.StudentSubject.Student.Person.FirstName @Model.StudentSubject.Student.Person.LastName
+            </dd>
+        }
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.StudentSubject.Subject)
+        </dt>
+        <dd class="col-sm-9">
+            @Model.StudentSubject.Subject.Name
+        </dd>
+        <dt class="col-sm-3">
+            Opinion about lecture
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.LectureOpinion)
+        </dd>
+        <dt class="col-sm-3">
+            Grade for lecture
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.LectureGrade)
+        </dd>
+        <dt class="col-sm-3">
+            Opinion about seminar
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.SeminarOpinion)
+        </dd>
+        <dt class="col-sm-3">
+            Grade for seminar
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.SeminarGrade)
+        </dd>
+        <dt class="col-sm-3">
+            Date
+        </dt>
+        <dd class="col-sm-9">
+            @Model.DateTime.ToString("dd/MM/yyy")
+        </dd>
+    </dl>
+</div>
+<div>
+    @if (!CurrentUser.Roles.Contains("Teacher"))
+    {
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    }
+    <a asp-action="Index" class="btn btn-primary">Back to List</a>
+</div>

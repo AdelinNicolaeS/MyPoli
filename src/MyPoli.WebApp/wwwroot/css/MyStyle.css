@@ -1,0 +1,17 @@
+﻿
+
+.my-btn {
+    border-block-color: black;
+    border-block-width: 3px;
+}
+form i {
+    /*margin-left: -30px;
+    margin-top: -25px;
+    cursor: pointer;*/
+    float: right;
+    margin-top: -2rem;
+    position: relative;
+    z-index: 2;
+}
+
+

@@ -1,0 +1,51 @@
+﻿@model MyPoli.Entities.Feedback
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Feedback</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.StudentSubject.Student)
+        </dt>
+        <dd class="col-sm-9">
+            @Model.StudentSubject.Student.Person.FirstName @Model.StudentSubject.Student.Person.LastName
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.StudentSubject.Subject)
+        </dt>
+        <dd class="col-sm-9">
+            @Model.StudentSubject.Subject.Name
+        </dd>   
+        <dt class="col-sm-3">
+            Grade for lecture
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.LectureGrade)
+        </dd>
+        <dt class="col-sm-3">
+            Grade for seminar
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.SeminarGrade)
+        </dd>
+        <dt class="col-sm-3">
+            Date
+        </dt>
+        <dd class="col-sm-9">
+            @Model.DateTime.ToString("dd/MM/yyy")
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-primary">Back to List</a>
+    </form>
+</div>

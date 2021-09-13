@@ -1,0 +1,95 @@
+﻿@model MyPoli.BusinessLogic.Models.TeacherCreateVM
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<h1>Create</h1>
+
+<h4>Teacher</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label">Forename</label>
+                <input asp-for="FirstName" class="form-control" placeholder="Add Forename" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label">Surname</label>
+                <input asp-for="LastName" class="form-control" placeholder="Add Surname" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Birthday" class="control-label"></label>
+                <input asp-for="Birthday" class="form-control" placeholder="Add Birthday" />
+                <span asp-validation-for="Birthday" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" placeholder="Add Address" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input type="password" asp-for="Password" class="form-control" placeholder="Add Password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+                <small id="PassHelp" class="form-text text-muted">Please choose your password wisely.</small>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" placeholder="Add Phone Number" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" placeholder="Add Email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GenderId" class="control-label">Gender</label>
+                <select asp-for="GenderId" class="form-control" asp-items="Model.GenderIds"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="NationalityId" class="control-label">Nationality</label>
+                <select asp-for="NationalityId" class="form-control" asp-items="Model.NationalityIds"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Experience" class="control-label">Experience</label>
+                <input asp-for="Experience" class="form-control" placeholder="Add Experience" />
+                <span asp-validation-for="Experience" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Salary" class="control-label">Salary</label>
+                <input asp-for="Salary" class="form-control" placeholder="Add Salary" />
+                <span asp-validation-for="Salary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubjectIds" class="control-label">Subjects</label>
+                <select asp-for="SubjectIds" id="subjectSelect" class="form-control" multiple="multiple" asp-items="Model.SubjectIds"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="GroupIds" class="control-label">Groups</label>
+                <select asp-for="GroupIds" id="groupSelect" class="form-control" multiple="multiple" asp-items="Model.GroupIds"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-primary">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="/js/subjects.js"></script>
+    <script src="/js/groups.js"></script>
+}

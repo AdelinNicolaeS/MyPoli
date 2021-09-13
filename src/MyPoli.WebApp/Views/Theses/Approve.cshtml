@@ -1,0 +1,53 @@
+﻿@model MyPoli.Entities.Thesis
+
+@{
+    ViewData["Title"] = "ApproveThesis";
+}
+
+<h1>ApproveThesis</h1>
+
+<h3>Are you sure you want to approve this?</h3>
+<div>
+    <h4>Thesis</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Date.ToString("dd/MM/yyy")
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+        <dd class="col-sm-10">
+            <a asp-controller="Theses" asp-action="ViewThesis" asp-route-id="@Model.Id" target="_blank">Link</a>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Student)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Student.Person.FirstName @Model.Student.Person.LastName
+        </dd>
+    </dl>
+
+    <form asp-action="ApproveThesis">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Approve" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-primary">Back to List</a>
+    </form>
+</div>
+
+

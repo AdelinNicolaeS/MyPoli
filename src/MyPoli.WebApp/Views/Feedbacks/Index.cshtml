@@ -1,0 +1,111 @@
+﻿@model MyPoli.BusinessLogic.Models.PaginatedList<MyPoli.Entities.Feedback>
+@inject MyPoli.Common.DTOs.CurrentUserDto CurrentUser
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Feedbacks</h1>
+
+@if(CurrentUser.Roles.Contains("Student")) {
+<p>
+    <a asp-action="Create" class="btn btn-outline-primary">Create New</a>
+    <a asp-action="Index" class="btn btn-outline-primary">Back to Full List</a>
+</p>
+} else {
+<p>
+    <a asp-action="Index" class="btn btn-outline-primary">Back to Full List</a>
+</p>
+}
+
+@using (Html.BeginForm())
+{
+<p>
+    Search: @Html.TextBox("SearchString")
+    <input type="submit" value="Search" />
+</p>
+}
+
+<table class="table table-striped table-hover table-bordered">
+   
+    <thead>
+        <tr>
+            @if (!CurrentUser.Roles.Contains("Teacher"))
+            {
+                <th>
+                    @Html.ActionLink("Student", "Index", new { sortOrder = ViewBag.StudentSort })
+                </th>
+            }
+            <th>
+                @Html.ActionLink("Subject", "Index", new { sortOrder = ViewBag.SubjectSort })
+            </th>
+            <th  width="10%">
+                @Html.ActionLink("Lecture Grade", "Index", new { sortOrder = ViewBag.GradeLectureSort })
+            </th>
+            <th  width="10%">
+                @Html.ActionLink("Seminar Grade", "Index", new { sortOrder = ViewBag.GradeSeminarSort })
+            </th>
+            <th>
+                @Html.ActionLink("Date", "Index", new { sortOrder = ViewBag.DateSort })
+            </th>
+            <th ></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if (!CurrentUser.Roles.Contains("Teacher"))
+                {
+                    <td>
+                        @item.StudentSubject.Student.Person.FirstName @item.StudentSubject.Student.Person.LastName
+                    </td>
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudentSubject.Subject.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LectureGrade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SeminarGrade)
+                </td>
+                <td>
+                    @item.DateTime.ToString("dd/MM/yyy")
+                </td>
+                <td>
+                    @if (!CurrentUser.Roles.Contains("Teacher"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Details</a>
+                    @if (!CurrentUser.Roles.Contains("Teacher"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-secondary text-right btn-sm active @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-secondary text-right btn-sm active @nextDisabled">
+    Next
+</a>

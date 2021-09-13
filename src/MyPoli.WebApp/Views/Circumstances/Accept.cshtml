@@ -1,0 +1,45 @@
+﻿@model MyPoli.Entities.Circumstance
+
+@{
+    ViewData["Title"] = "Accept Personal Circumstance";
+}
+
+<h1>Accept Circumstance</h1>
+
+<h3>Are you sure you want to accept this?</h3>
+<div>
+    <h4>Personal Circumstance</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Student)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Student.Person.FirstName  @Model.Student.Person.LastName
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+    </dl>
+
+    <form asp-action="AcceptCircumstance">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Accept" class="btn btn-success" />
+        <a asp-action="Index" class="btn btn-primary" >Back to List</a>
+    </form>
+</div>
