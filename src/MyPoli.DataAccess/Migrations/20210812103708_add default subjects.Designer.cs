@@ -9,7 +9,7 @@ using MyPoli.DataAccess;
 
 namespace MyPoli.DataAccess.Migrations
 {
-    [DbContext(typeof(FifthTry2Context))]
+    [DbContext(typeof(MyPoliContext))]
     [Migration("20210812103708_add default subjects")]
     partial class adddefaultsubjects
     {

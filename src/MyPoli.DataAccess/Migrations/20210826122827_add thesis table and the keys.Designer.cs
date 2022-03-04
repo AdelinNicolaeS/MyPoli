@@ -9,7 +9,7 @@ using MyPoli.DataAccess;
 
 namespace MyPoli.DataAccess.Migrations
 {
-    [DbContext(typeof(FifthTry2Context))]
+    [DbContext(typeof(MyPoliContext))]
     [Migration("20210826122827_add thesis table and the keys")]
     partial class addthesistableandthekeys
     {

@@ -9,7 +9,7 @@ using MyPoli.DataAccess;
 
 namespace MyPoli.DataAccess.Migrations
 {
-    [DbContext(typeof(FifthTry2Context))]
+    [DbContext(typeof(MyPoliContext))]
     [Migration("20210819111624_changeFKGrade_StudentSubject")]
     partial class changeFKGrade_StudentSubject
     {

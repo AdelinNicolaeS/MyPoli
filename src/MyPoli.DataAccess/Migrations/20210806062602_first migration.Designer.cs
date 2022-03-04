@@ -9,7 +9,7 @@ using MyPoli.Entities;
 
 namespace MyPoli.DataAccess.Migrations
 {
-    [DbContext(typeof(FifthTry2Context))]
+    [DbContext(typeof(MyPoliContext))]
     [Migration("20210806062602_first migration")]
     partial class firstmigration
     {

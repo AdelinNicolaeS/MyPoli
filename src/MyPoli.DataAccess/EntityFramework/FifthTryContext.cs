@@ -13,13 +13,13 @@ using System.Threading.Tasks;
 
 namespace MyPoli.DataAccess
 {
-    public partial class FifthTry2Context : DbContext
+    public partial class MyPoliContext : DbContext
     {
-        public FifthTry2Context()
+        public MyPoliContext()
         {
         }
 
-        public FifthTry2Context(DbContextOptions<FifthTry2Context> options)
+        public MyPoliContext(DbContextOptions<MyPoliContext> options)
             : base(options)
         {
         }
@@ -46,13 +46,14 @@ namespace MyPoli.DataAccess
         public virtual DbSet<Circumstance> Circumstances { get; set; }
         public virtual DbSet<Feedback> Feedbacks { get; set; }
         
-
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=ASTANCA;Initial Catalog=FifthTry2;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                //optionsBuilder.UseSqlServer("Data Source=ASTANCA;Initial Catalog=MyPoli;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-T2SS4A8;Initial Catalog=MyPoli;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             }
         }
 

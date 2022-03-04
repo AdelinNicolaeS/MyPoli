@@ -6,9 +6,9 @@ namespace MyPoli.DataAccess
 {
     public class UnitOfWork
     {
-        private readonly FifthTry2Context Context;
+        private readonly MyPoliContext Context;
 
-        public UnitOfWork(FifthTry2Context context)
+        public UnitOfWork(MyPoliContext context)
         {
             Context = context;
         }

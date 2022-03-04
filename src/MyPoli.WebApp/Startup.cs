@@ -35,7 +35,7 @@ namespace MyPoli.WebApp
             {
                 options.AddMaps(typeof(Startup),typeof(BaseService));
             });
-            services.AddDbContext<FifthTry2Context>(options =>
+            services.AddDbContext<MyPoliContext>(options =>
             {
                 options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]);
             });

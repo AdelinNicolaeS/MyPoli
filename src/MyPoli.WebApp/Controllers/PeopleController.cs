@@ -12,9 +12,9 @@ namespace MyPoli.WebApp.Controllers
 {
     public class PeopleController : Controller
     {
-        private readonly FifthTry2Context _context;
+        private readonly MyPoliContext _context;
 
-        public PeopleController(FifthTry2Context context)
+        public PeopleController(MyPoliContext context)
         {
             _context = context;
         }
@@ -22,8 +22,8 @@ namespace MyPoli.WebApp.Controllers
         // GET: People
         public async Task<IActionResult> Index()
         {
-            var fifthTry2Context = _context.People.Include(p => p.Gender).Include(p => p.Nationality);
-            return View(await fifthTry2Context.Take(10).ToListAsync());
+            var myContext = _context.People.Include(p => p.Gender).Include(p => p.Nationality);
+            return View(await myContext.Take(10).ToListAsync());
         }
 
         // GET: People/Details/5

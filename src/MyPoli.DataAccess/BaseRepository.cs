@@ -6,9 +6,9 @@ namespace MyPoli.DataAccess
     public class BaseRepository<TEntity> : IRepository<TEntity>
         where TEntity : class, IEntity
     {
-        private readonly FifthTry2Context Context;
+        private readonly MyPoliContext Context;
 
-        public BaseRepository(FifthTry2Context context)
+        public BaseRepository(MyPoliContext context)
         {
             this.Context = context;
         }
