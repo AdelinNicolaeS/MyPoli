@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 
 namespace MyPoli.Common
 {
@@ -39,6 +35,40 @@ namespace MyPoli.Common
             var aux = Encoding.ASCII.GetBytes(input);
             var result = sha.ComputeHash(aux);
             return ByteArrayToString(result);
+        }
+
+        private static int min(int x, int y, int z)
+        {
+            if (x <= y && x <= z)
+                return x;
+            if (y <= x && y <= z)
+                return y;
+            return z;
+        }
+
+        public static int EditDist(String str1, String str2)
+        {
+            return EditDistAux(str1, str2, str1.Length, str2.Length);
+        }
+
+        private static int EditDistAux(String str1, String str2, int m,
+                            int n)
+        {
+            if (m == 0)
+                return n;
+
+            if (n == 0)
+                return m;
+
+            if (str1[m - 1] == str2[n - 1])
+                return EditDistAux(str1, str2, m - 1, n - 1);
+
+            return 1
+                + min(EditDistAux(str1, str2, m, n - 1), // Insert
+                      EditDistAux(str1, str2, m - 1, n), // Remove
+                      EditDistAux(str1, str2, m - 1,
+                               n - 1) // Replace
+                  );
         }
 
     }
