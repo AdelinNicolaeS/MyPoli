@@ -14,6 +14,7 @@ using MyPoli.Entities;
 using MyPoli.BusinessLogic.Models;
 using MyPoli.WebApp.Code.Base;
 using MyPoli.BusinessLogic.Implementation.StudentOperations;
+using MyPoli.BusinessLogic.Implementation.BadWordOperations;
 
 namespace MyPoli.WebApp.Controllers
 {
@@ -23,11 +24,13 @@ namespace MyPoli.WebApp.Controllers
         private readonly FeedbackService feedbackService;
         private readonly SubjectService subjectService;
         private readonly StudentService studentService;
-        public FeedbacksController(ControllerDependencies dependencies, FeedbackService feedbackService, SubjectService subjectService, StudentService studentService) : base(dependencies)
+        private readonly BadWordService badWordsService;
+        public FeedbacksController(ControllerDependencies dependencies, FeedbackService feedbackService, SubjectService subjectService, StudentService studentService, BadWordService badWordsService) : base(dependencies)
         {
             this.subjectService = subjectService;
             this.feedbackService = feedbackService;
             this.studentService = studentService;
+            this.badWordsService = badWordsService;
         }
 
         // GET: Feedbacks
@@ -102,7 +105,8 @@ namespace MyPoli.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                feedbackService.CreateFeedbackFromModel(model, CurrentUser);
+                var badWords = await badWordsService.IndexToWrite("", "").ToListAsync();
+                feedbackService.CreateFeedbackFromModelAsync(model, badWords);
                 return RedirectToAction(nameof(Index));
             }
             model.SubjectIds = new SelectList(await feedbackService.GetSubjectsByStudentAsync(CurrentUser), "Value", "Text");
@@ -145,7 +149,7 @@ namespace MyPoli.WebApp.Controllers
         [HttpPost]
         [Authorize(Roles = "Student, Secretary")]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Guid id, FeedbackEditVM model)
+        public async Task<IActionResult> EditAsync(Guid id, FeedbackEditVM model)
         {
             if (id != model.Id)
             {
@@ -156,7 +160,8 @@ namespace MyPoli.WebApp.Controllers
             {
                 try
                 {
-                    feedbackService.EditFeedbackFromModel(model);
+                    var badWords = await badWordsService.IndexToWrite("", "").ToListAsync();
+                    feedbackService.EditFeedbackFromModel(model, badWords);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -239,11 +244,12 @@ namespace MyPoli.WebApp.Controllers
         [HttpPost]
         [Authorize(Roles = "Student")]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateBySubject(FeedbackCreateBySubjectVM model)
+        public async Task<IActionResult> CreateBySubjectAsync(FeedbackCreateBySubjectVM model)
         {
             if (ModelState.IsValid)
             {
-                feedbackService.CreateFeedbackFromModelWithSubject(model, CurrentUser);
+                var badWords = await badWordsService.IndexToWrite("", "").ToListAsync();
+                feedbackService.CreateFeedbackFromModelWithSubject(model, badWords);
                 return RedirectToAction(nameof(Index));
             }
             return View(model);

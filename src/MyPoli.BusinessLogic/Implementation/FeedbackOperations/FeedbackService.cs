@@ -11,6 +11,7 @@ using MyPoli.Common.DTOs;
 using MyPoli.Common.Extensions;
 using MyPoli.Entities;
 using MyPoli.BusinessLogic.Models;
+using MyPoli.Common;
 
 namespace MyPoli.BusinessLogic.Implementation.FeedbackOperations
 {
@@ -52,8 +53,7 @@ namespace MyPoli.BusinessLogic.Implementation.FeedbackOperations
                 searchString = searchString.ToUpper();
                 feedbacks = feedbacks.Where(f => f.StudentSubject.Subject.Name.ToUpper().Contains(searchString) ||
                     f.StudentSubject.Student.Person.FirstName.ToUpper().Contains(searchString) || f.SeminarGrade.ToString().Contains(searchString) ||
-                    f.StudentSubject.Student.Person.LastName.ToUpper().Contains(searchString) ||  f.LectureGrade.ToString().Contains(searchString) 
-                   /* f.DateTime.Year.ToString().Contains(searchString) || f.DateTime.Month.ToString().Contains(searchString) || f.DateTime.Day.ToString().Contains(searchString)*/);
+                    f.StudentSubject.Student.Person.LastName.ToUpper().Contains(searchString) || f.LectureGrade.ToString().Contains(searchString)); 
             }
             return sortOrder switch
             {
@@ -99,20 +99,45 @@ namespace MyPoli.BusinessLogic.Implementation.FeedbackOperations
             return feedback.StudentSubject.IdStudent == studentId;
         }
 
-        public void CreateFeedbackFromModel(FeedbackCreateVM model, CurrentUserDto currentUser)
+        public void CreateFeedbackFromModelAsync(FeedbackCreateVM model, List<BadWord> badWords)
         {
+            var lectureOpinion = model.LectureOpinion;
+            var seminarOpinion = model.SeminarOpinion;
+            var lectureWords = Utils.ConvertArrayToList(lectureOpinion.Split(Utils.delimiterChars));
+            var seminarWords = Utils.ConvertArrayToList(seminarOpinion.Split(Utils.delimiterChars));
+
             ExecuteInTransaction(uow => {
                 feedbackCreateValidator.Validate(model).ThenThrow(model);
+
+                badWords.ForEach(bw => {
+                    lectureWords.ForEach(lw =>
+                    {
+                        var val1 = Utils.EditDist(bw.Value, lw);
+                        var val2 = Utils.MinimumDiff_EditDist;
+                        if (val1 < val2)
+                        {
+                            lectureOpinion = lectureOpinion.Replace(lw, new string('*', lw.Length));
+                        }
+                    });
+                    seminarWords.ForEach(sw =>
+                    {
+                        if (Utils.EditDist(bw.Value, sw) <= Utils.MinimumDiff_EditDist)
+                        {
+                            seminarOpinion = seminarOpinion.Replace(sw, new string('*', sw.Length));
+                        }
+                    });
+                });
+
                 var feedback = new Feedback()
                 {
                     Id = Guid.NewGuid(),
                     DateTime = DateTime.Now,
-                    IdStudent = currentUser.Id,
+                    IdStudent = CurrentUser.Id,
                     IdSubject = model.SubjectId,
                     SeminarGrade = model.SeminarGrade,
-                    SeminarOpinion = model.SeminarOpinion,
+                    SeminarOpinion = seminarOpinion,
                     LectureGrade = model.LectureGrade,
-                    LectureOpinion = model.LectureOpinion,
+                    LectureOpinion = lectureOpinion,
                     IsDeleted = false
                 };
                 uow.Feedbacks.Insert(feedback);
@@ -132,15 +157,36 @@ namespace MyPoli.BusinessLogic.Implementation.FeedbackOperations
             });
         }
 
-        public void EditFeedbackFromModel(FeedbackEditVM model)
+        public void EditFeedbackFromModel(FeedbackEditVM model, List<BadWord> badWords)
         {
+            var lectureOpinion = model.LectureOpinion;
+            var seminarOpinion = model.SeminarOpinion;
+            var lectureWords = Utils.ConvertArrayToList(lectureOpinion.Split(Utils.delimiterChars));
+            var seminarWords = Utils.ConvertArrayToList(seminarOpinion.Split(Utils.delimiterChars));
             ExecuteInTransaction(uow => {
                 feedbackEditValidator.Validate(model).ThenThrow(model);
                 var feedback = uow.Feedbacks.Get().FirstOrDefault(f => f.Id == model.Id);
+                badWords.ForEach(bw => {
+                    lectureWords.ForEach(lw =>
+                    {
+                        if (Utils.EditDist(bw.Value, lw) <= Utils.MinimumDiff_EditDist)
+                        {
+                            lectureOpinion = lectureOpinion.Replace(lw, new string('*', lw.Length));
+                        }
+                    });
+                    seminarWords.ForEach(sw =>
+                    {
+                        if (Utils.EditDist(bw.Value, sw) <= Utils.MinimumDiff_EditDist)
+                        {
+                            seminarOpinion = seminarOpinion.Replace(sw, new string('*', sw.Length));
+                        }
+                    });
+                });
+
                 feedback.LectureGrade = model.LectureGrade;
-                feedback.LectureOpinion = model.LectureOpinion;
+                feedback.LectureOpinion = lectureOpinion;
                 feedback.SeminarGrade = model.SeminarGrade;
-                feedback.SeminarOpinion = model.SeminarOpinion;
+                feedback.SeminarOpinion = seminarOpinion;
 
                 uow.Feedbacks.Update(feedback);
                 uow.SaveChanges();
@@ -193,20 +239,41 @@ namespace MyPoli.BusinessLogic.Implementation.FeedbackOperations
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
-        public void CreateFeedbackFromModelWithSubject(FeedbackCreateBySubjectVM model, CurrentUserDto currentUser)
+        public void CreateFeedbackFromModelWithSubject(FeedbackCreateBySubjectVM model, List<BadWord> badWords)
         {
+            var lectureOpinion = model.LectureOpinion;
+            var seminarOpinion = model.SeminarOpinion;
+            var lectureWords = Utils.ConvertArrayToList(lectureOpinion.Split(Utils.delimiterChars));
+            var seminarWords = Utils.ConvertArrayToList(seminarOpinion.Split(Utils.delimiterChars));
             ExecuteInTransaction(uow => {
                 feedbackCreateBySubjectValidator.Validate(model).ThenThrow(model);
+
+                badWords.ForEach(bw => {
+                    lectureWords.ForEach(lw =>
+                    {
+                        if(Utils.EditDist(bw.Value, lw) <= Utils.MinimumDiff_EditDist)
+                        {
+                            lectureOpinion = lectureOpinion.Replace(lw, new string('*', lw.Length));
+                        }
+                    });
+                    seminarWords.ForEach(sw =>
+                    {
+                        if (Utils.EditDist(bw.Value, sw) <= Utils.MinimumDiff_EditDist)
+                        {
+                            seminarOpinion = seminarOpinion.Replace(sw, new string('*', sw.Length));
+                        }
+                    });
+                });
                 var feedback = new Feedback()
                 {
                     Id = Guid.NewGuid(),
                     DateTime = DateTime.Now,
-                    IdStudent = currentUser.Id,
+                    IdStudent = CurrentUser.Id,
                     IdSubject = model.SubjectId,
                     SeminarGrade = model.SeminarGrade,
-                    SeminarOpinion = model.SeminarOpinion,
+                    SeminarOpinion = seminarOpinion,
                     LectureGrade = model.LectureGrade,
-                    LectureOpinion = model.LectureOpinion,
+                    LectureOpinion = lectureOpinion,
                     IsDeleted = false
                 };
                 uow.Feedbacks.Insert(feedback);

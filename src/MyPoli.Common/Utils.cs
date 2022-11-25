@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -11,6 +12,8 @@ namespace MyPoli.Common
         public static readonly int PageSize = 10;
         public static readonly string Unauthorized = "Error_Unauthorized";
         public static readonly string NotFound = "Error_NotFound";
+        public static readonly char[] delimiterChars = { ' ', ',', '.', ':', '\t' };
+        public static readonly int MinimumDiff_EditDist = 3;
 
         public static byte[] FileToByteArray(IFormFile file)
         {
@@ -69,6 +72,13 @@ namespace MyPoli.Common
                       EditDistAux(str1, str2, m - 1,
                                n - 1) // Replace
                   );
+        }
+
+        public static List<string> ConvertArrayToList(string[] array)
+        {
+            List<string> lst = new();
+            lst.AddRange(array);
+            return lst;
         }
 
     }
