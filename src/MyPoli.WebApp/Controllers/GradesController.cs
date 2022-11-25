@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,7 +8,6 @@ using MyPoli.BusinessLogic.Implementation.Grades;
 using MyPoli.BusinessLogic.Implementation.StudentOperations;
 using MyPoli.BusinessLogic.Implementation.SubjectOperations;
 using MyPoli.Common;
-using MyPoli.DataAccess;
 using MyPoli.Entities;
 using MyPoli.BusinessLogic.Models;
 using MyPoli.WebApp.Code.Base;
