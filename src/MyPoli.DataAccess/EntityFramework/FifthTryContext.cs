@@ -8,7 +8,6 @@ using MyPoli.DataAccess.EntityFramework.Configurations;
 using MyPoli.Entities;
 using MyPoli.Entities.Enums;
 using MyPoli.Common;
-using System.Threading.Tasks;
 #nullable disable
 
 namespace MyPoli.DataAccess
@@ -45,6 +44,7 @@ namespace MyPoli.DataAccess
         public virtual DbSet<Thesis> Theses { get; set; }
         public virtual DbSet<Circumstance> Circumstances { get; set; }
         public virtual DbSet<Feedback> Feedbacks { get; set; }
+        public virtual DbSet<BadWord> BadWords { get; set; }
         
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -455,6 +455,17 @@ namespace MyPoli.DataAccess
                     .HasForeignKey(d => d.IdTeacher)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Fk_TeacherGroup_Teacher");
+            });
+
+            modelBuilder.Entity<BadWord>(entity =>
+            {
+                entity.ToTable("BadWord");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Value)
+                    .IsRequired()
+                    .HasMaxLength(50);
             });
 
             OnModelCreatingPartial(modelBuilder);

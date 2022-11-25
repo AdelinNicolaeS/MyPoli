@@ -78,6 +78,9 @@ namespace MyPoli.DataAccess
 
         private IRepository<Feedback> feedbacks;
         public IRepository<Feedback> Feedbacks => feedbacks ?? (feedbacks = new BaseRepository<Feedback>(Context));
+
+        private IRepository<BadWord> badWords;
+        public IRepository<BadWord> BadWords => badWords ?? (badWords = new BaseRepository<BadWord>(Context));
         // pentru fiecare entitate? si pentru tabelele de legatura??????????????????????????????
         // doar ce e nevoie, doar ce folosesc
 

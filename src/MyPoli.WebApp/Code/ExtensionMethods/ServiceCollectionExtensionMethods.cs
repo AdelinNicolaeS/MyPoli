@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using MyPoli.BusinessLogic;
 using MyPoli.BusinessLogic.Implementation.Account;
+using MyPoli.BusinessLogic.Implementation.BadWordOperations;
 using MyPoli.BusinessLogic.Implementation.CertificatesOperations;
 using MyPoli.BusinessLogic.Implementation.CircumstanceOperations;
 using MyPoli.BusinessLogic.Implementation.FeedbackOperations;
@@ -43,6 +44,7 @@ namespace MyPoli.WebApp.Code.ExtensionMethods
             services.AddScoped<ThesisService>();
             services.AddScoped<CircumstanceService>();
             services.AddScoped<FeedbackService>();
+            services.AddScoped<BadWordService>();
             // adaug serviciile aici ex StudentsService
             return services;
         }
