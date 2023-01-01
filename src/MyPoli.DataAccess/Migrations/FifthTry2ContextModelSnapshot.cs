@@ -17,10 +17,10 @@ namespace MyPoli.DataAccess.Migrations
             modelBuilder
                 .HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.8")
+                .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("MyPoli.BusinessLogic.Models.BadWord", b =>
+            modelBuilder.Entity("MyPoli.Entities.BadWord", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -367,6 +367,12 @@ namespace MyPoli.DataAccess.Migrations
 
                     b.Property<Guid?>("StatusId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("isSeenInCourse")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isSeenInGroup")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

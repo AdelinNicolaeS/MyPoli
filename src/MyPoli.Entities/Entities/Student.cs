@@ -21,6 +21,8 @@ namespace MyPoli.Entities
         public Guid? StatusId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public Boolean IsSeenInCourse { get; set; }
+        public Boolean IsSeenInGroup { get; set; }
 
         public virtual Thesis Thesis { get; set; }
         public virtual Group Group { get; set; }

@@ -98,6 +98,8 @@ namespace MyPoli.BusinessLogic.Implementation.StudentOperations
                     EndDate = model.EndDate,
                     GroupId = model.GroupId,
                     StatusId = model.StatusId,
+                    IsSeenInCourse = model.IsSeenInCourse,
+                    IsSeenInGroup = model.IsSeenInGroup
                 };
                 var person = new Person()
                 {
@@ -155,6 +157,8 @@ namespace MyPoli.BusinessLogic.Implementation.StudentOperations
                 student.EndDate = studentEdit.EndDate;
                 student.GroupId = studentEdit.GroupId;
                 student.StatusId = studentEdit.StatusId;
+                student.IsSeenInCourse = studentEdit.IsSeenInCourse;
+                student.IsSeenInGroup = studentEdit.IsSeenInGroup;
 
                 var person = uow.People.Get().FirstOrDefault(s => s.Id == studentEdit.Id);
                 person.Address = studentEdit.Address;
@@ -266,6 +270,8 @@ namespace MyPoli.BusinessLogic.Implementation.StudentOperations
                         .ThenInclude(ss => ss.Grade)
                     .FirstOrDefault(s => s.Id == studentEdit.Id);
                 student.EndDate = studentEdit.EndDate;
+                student.IsSeenInCourse = studentEdit.IsSeenInCourse;
+                student.IsSeenInGroup = studentEdit.IsSeenInGroup;
 
                 var person = uow.People.Get().FirstOrDefault(s => s.Id == studentEdit.Id);
                 person.Address = studentEdit.Address;

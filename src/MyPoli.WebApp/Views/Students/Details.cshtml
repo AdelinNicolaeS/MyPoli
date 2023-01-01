@@ -77,21 +77,33 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Status.Name)
         </dd>
+        <dt class="col-sm-2">
+            Visible for course
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsSeenInCourse)
+        </dd>
+        <dt class="col-sm-2">
+            Visible for group
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsSeenInGroup)
+        </dd>
         @if (CurrentUser.Id == Model.Id)
         {
-        <dt class="col-sm-2">
-            Subjects:
-        </dt>
-        @foreach (var subject in Model.StudentSubjects.Select(ss => ss.Subject).OrderBy(s => s.Name))
-            if (!subject.IsDeleted)
-            {
-                <dd class="col-sm-10">
-                    <a asp-controller="Subjects" asp-action="Details" asp-route-id="@subject.Id">@subject.Name</a>
-                </dd>
-                <dt class="col-sm-2">
+            <dt class="col-sm-2">
+                Subjects:
+            </dt>
+            @foreach (var subject in Model.StudentSubjects.Select(ss => ss.Subject).OrderBy(s => s.Name))
+                if (!subject.IsDeleted)
+                {
+                    <dd class="col-sm-10">
+                        <a asp-controller="Subjects" asp-action="Details" asp-route-id="@subject.Id">@subject.Name</a>
+                    </dd>
+                    <dt class="col-sm-2">
 
-                </dt>
-            }
+                    </dt>
+                }
         }
     </dl>
 </div>

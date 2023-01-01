@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MyPoli.BusinessLogic.Implementation.StudentOperations;
-using MyPoli.Common;
 
 namespace MyPoli.BusinessLogic.Models
 {
@@ -32,6 +28,8 @@ namespace MyPoli.BusinessLogic.Models
         public DateTime StartDate { get; set; }
         [Required(ErrorMessage = "End Date is Required")]
         public DateTime EndDate { get; set; }
+        public Boolean IsSeenInCourse { get; set; }
+        public Boolean IsSeenInGroup { get; set; }
         public int RoleId { get; set; }
 
         public SelectList NationalityIds { get; set; }

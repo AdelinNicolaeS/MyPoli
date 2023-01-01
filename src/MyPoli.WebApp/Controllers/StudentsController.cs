@@ -139,6 +139,8 @@ namespace MyPoli.WebApp.Controllers
                 NationalityId = student.Person.NationalityId,
                 Phone = student.Person.Phone,
                 RoleId = student.Person.RoleId,
+                IsSeenInCourse = student.IsSeenInCourse,
+                IsSeenInGroup = student.IsSeenInGroup,
                 SubjectIds = null,
             };
             studentEdit.GenderIds = new SelectList(studentService.GetGenders(), "Id", "Name", studentEdit.GenderId);
@@ -263,6 +265,8 @@ namespace MyPoli.WebApp.Controllers
                 LastName = student.Person.LastName,
                 NationalityId = student.Person.NationalityId,
                 Phone = student.Person.Phone,
+                IsSeenInGroup = student.IsSeenInGroup,
+                IsSeenInCourse = student.IsSeenInCourse,
                 RoleId = student.Person.RoleId,
             };
             studentEdit.GenderIds = new SelectList(studentService.GetGenders(), "Id", "Name", studentEdit.GenderId);
@@ -302,10 +306,8 @@ namespace MyPoli.WebApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { studentEdit.Id });
             }
-
-         
             studentEdit.GenderIds = new SelectList(studentService.GetGenders(), "Id", "Name", studentEdit.GenderId);
             studentEdit.NationalityIds = new SelectList(studentService.GetNationalities(), "Id", "Name", studentEdit.NationalityId);
             return View(studentEdit);
