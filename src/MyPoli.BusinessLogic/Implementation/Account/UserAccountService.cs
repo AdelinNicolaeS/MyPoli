@@ -39,6 +39,11 @@ namespace MyPoli.BusinessLogic.Implementation.Account
             {
                 return new CurrentUserDto { IsAuthenticated = false };
             }
+
+            person.LastLogin = DateTime.Now;
+            UnitOfWork.People.Update(person);
+            UnitOfWork.SaveChanges();
+
             var curr = new CurrentUserDto
             {
                 Id = person.Id,

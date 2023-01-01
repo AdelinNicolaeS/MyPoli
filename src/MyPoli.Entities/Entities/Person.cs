@@ -20,7 +20,7 @@ namespace MyPoli.Entities
         public Guid NationalityId { get; set; }
         public Guid GenderId { get; set; }
         public bool IsDeleted { get; set; }
-
+        public DateTime? LastLogin { get; set; }
         public virtual Gender Gender { get; set; }
         public virtual Nationality Nationality { get; set; }
         public virtual Secretary Secretary { get; set; }
