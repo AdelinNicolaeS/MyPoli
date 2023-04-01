@@ -81,6 +81,10 @@ namespace MyPoli.DataAccess
 
         private IRepository<BadWord> badWords;
         public IRepository<BadWord> BadWords => badWords ?? (badWords = new BaseRepository<BadWord>(Context));
+
+        private IRepository<Notification> notifications;
+        public IRepository<Notification> Notifications => notifications ?? (notifications = new BaseRepository<Notification>(Context));
+
         // pentru fiecare entitate? si pentru tabelele de legatura??????????????????????????????
         // doar ce e nevoie, doar ce folosesc
 

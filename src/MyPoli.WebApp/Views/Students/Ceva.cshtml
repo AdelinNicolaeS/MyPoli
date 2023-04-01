@@ -1,0 +1,44 @@
+﻿<div>
+    <h2>My Chart</h2>
+    <canvas id="myChart"></canvas>
+    <p>This is my chart. It shows some data.</p>
+</div>
+
+@section scripts {
+    <script src="~/js/myChart.js"></script>
+    <link rel="stylesheet" href="~/css/myChart.css" />
+}
+
+@*@model ChartModel
+
+<div>
+    <canvas id="myChart"></canvas>
+</div>
+
+@section scripts {
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.DataPointsX)),
+                datasets: [{
+                    label: 'DataPointsY',
+                    data: @Html.Raw(Json.Serialize(Model.DataPointsY)),
+                    backgroundColor: 'transparent',
+                    borderColor: 'red',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+}*@

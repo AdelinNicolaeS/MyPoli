@@ -13,6 +13,7 @@ using MyPoli.Entities;
 using MyPoli.BusinessLogic.Models;
 using MyPoli.WebApp.Code.Base;
 using MyPoli.BusinessLogic.Implementation.StudentOperations;
+using MyPoli.BusinessLogic.Implementation.NotificationOperations;
 
 namespace MyPoli.WebApp.Controllers
 {
@@ -23,13 +24,15 @@ namespace MyPoli.WebApp.Controllers
         private readonly GradeService gradeService;
         private readonly TeacherService teacherService;
         private readonly StudentService studentService;
+        private readonly NotificationService notificationService;
 
-        public ThesesController(ControllerDependencies dependencies, ThesisService _thesisService, GradeService _gradeService, TeacherService _teacherService, StudentService _studentService) : base(dependencies)
+        public ThesesController(ControllerDependencies dependencies, ThesisService _thesisService, GradeService _gradeService, TeacherService _teacherService, StudentService _studentService, NotificationService _notificationService) : base(dependencies)
         {
             gradeService = _gradeService;
             thesisService = _thesisService;
             teacherService = _teacherService;
             studentService = _studentService;
+            notificationService = _notificationService;
         }
 
         // GET: Theses
@@ -81,6 +84,7 @@ namespace MyPoli.WebApp.Controllers
             if (ModelState.IsValid)
             {
                 thesisService.CreateThesisFromModel(model);
+                notificationService.CreateThesisNotification(model.TeacherId);
                 return RedirectToAction(nameof(Index));
             }
             model.StudentId = CurrentUser.Id;
@@ -144,6 +148,7 @@ namespace MyPoli.WebApp.Controllers
                 try
                 {
                     thesisService.EditThesis(model, CurrentUser);
+                    notificationService.CreateThesisNotification(model.TeacherId);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -264,8 +269,9 @@ namespace MyPoli.WebApp.Controllers
         [Authorize(Roles = "Teacher")]
         public IActionResult ApproveThesis(Thesis thesis)
         {
-             thesisService.ApproveThesisByTeacher(thesis.Id);
-             return RedirectToAction(nameof(Index));
+            thesisService.ApproveThesisByTeacher(thesis.Id);
+            notificationService.CreateApproveThesisNotification(thesis.Id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

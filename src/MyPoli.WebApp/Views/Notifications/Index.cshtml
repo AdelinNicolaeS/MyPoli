@@ -1,0 +1,81 @@
+﻿@*@model IEnumerable<MyPoli.Entities.Notification>*@
+@model MyPoli.BusinessLogic.Models.PaginatedList<MyPoli.Entities.Notification>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Notifications</h1>
+
+<table class="table table-striped table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Text
+            </th>
+            <th>
+                Date
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            if (!item.IsRead)
+            {
+                <tr class="table-danger">
+                    <td>
+                        @item.Person.FirstName @item.Person.LastName
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NotificationType.Value)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        <a asp-action="MarkRead" class="btn btn-sm btn-primary active" asp-route-id="@item.Id">Mark as read</a>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr class="table">
+                    <td>
+                        @item.Person.FirstName @item.Person.LastName
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NotificationType.Value)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-secondary text-right btn-sm active @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-secondary text-right btn-sm active @nextDisabled">
+    Next
+</a>

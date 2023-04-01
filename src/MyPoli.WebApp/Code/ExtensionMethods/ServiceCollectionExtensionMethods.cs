@@ -8,6 +8,7 @@ using MyPoli.BusinessLogic.Implementation.CircumstanceOperations;
 using MyPoli.BusinessLogic.Implementation.FeedbackOperations;
 using MyPoli.BusinessLogic.Implementation.Grades;
 using MyPoli.BusinessLogic.Implementation.GroupOperations;
+using MyPoli.BusinessLogic.Implementation.NotificationOperations;
 using MyPoli.BusinessLogic.Implementation.StudentOperations;
 using MyPoli.BusinessLogic.Implementation.SubjectOperations;
 using MyPoli.BusinessLogic.Implementation.SubjectTeacherOperations;
@@ -45,6 +46,7 @@ namespace MyPoli.WebApp.Code.ExtensionMethods
             services.AddScoped<CircumstanceService>();
             services.AddScoped<FeedbackService>();
             services.AddScoped<BadWordService>();
+            services.AddScoped<NotificationService>();
             // adaug serviciile aici ex StudentsService
             return services;
         }
@@ -61,6 +63,8 @@ namespace MyPoli.WebApp.Code.ExtensionMethods
                 var firstname = claims?.FirstOrDefault(c => c.Type == "FirstName")?.Value;
                 var lastname = claims?.FirstOrDefault(c => c.Type == "LastName")?.Value;
                 var email = claims?.FirstOrDefault(c => c.Type == "Email")?.Value;
+                var unreadNotificationsAux = claims?.FirstOrDefault(c => c.Type == "UnreadNotifications")?.Value;
+                var unreadNotifications = unreadNotificationsAux ?? "0";
                 var userroles = claims?.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
 
                 var isParsingSuccessful = Guid.TryParse(userIdClaim, out Guid id);
@@ -72,6 +76,7 @@ namespace MyPoli.WebApp.Code.ExtensionMethods
                     Email = email,
                     FirstName = firstname,
                     LastName = lastname,
+                    UnreadNotifications = int.Parse(unreadNotifications),
                     Roles = userroles
                 };
             });

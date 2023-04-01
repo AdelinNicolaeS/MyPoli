@@ -15,6 +15,7 @@ using MyPoli.BusinessLogic.Models;
 using MyPoli.WebApp.Code.Base;
 using MyPoli.BusinessLogic.Implementation.StudentOperations;
 using MyPoli.BusinessLogic.Implementation.BadWordOperations;
+using MyPoli.BusinessLogic.Implementation.NotificationOperations;
 
 namespace MyPoli.WebApp.Controllers
 {
@@ -25,12 +26,14 @@ namespace MyPoli.WebApp.Controllers
         private readonly SubjectService subjectService;
         private readonly StudentService studentService;
         private readonly BadWordService badWordsService;
-        public FeedbacksController(ControllerDependencies dependencies, FeedbackService feedbackService, SubjectService subjectService, StudentService studentService, BadWordService badWordsService) : base(dependencies)
+        private readonly NotificationService notificationService;
+        public FeedbacksController(ControllerDependencies dependencies, FeedbackService feedbackService, SubjectService subjectService, StudentService studentService, BadWordService badWordsService, NotificationService notificationService) : base(dependencies)
         {
             this.subjectService = subjectService;
             this.feedbackService = feedbackService;
             this.studentService = studentService;
             this.badWordsService = badWordsService;
+            this.notificationService = notificationService;
         }
 
         // GET: Feedbacks
@@ -107,6 +110,8 @@ namespace MyPoli.WebApp.Controllers
             {
                 var badWords = await badWordsService.IndexToWrite("", "").ToListAsync();
                 feedbackService.CreateFeedbackFromModelAsync(model, badWords);
+                var teacherIds = subjectService.GetTeachersIdsOfSubject(model.SubjectId);
+                notificationService.CreateFeedbackNotification(teacherIds);
                 return RedirectToAction(nameof(Index));
             }
             model.SubjectIds = new SelectList(await feedbackService.GetSubjectsByStudentAsync(CurrentUser), "Value", "Text");

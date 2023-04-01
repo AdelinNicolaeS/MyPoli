@@ -124,5 +124,13 @@ namespace MyPoli.BusinessLogic.Implementation.SubjectOperations
         {
             return UnitOfWork.Subjects.Get().Where(s => !s.IsDeleted);
         }
+
+        public IQueryable<Guid> GetTeachersIdsOfSubject(Guid id)
+        {
+            var teacherIds = UnitOfWork.SubjectTeachers.Get()
+                .Where(st => st.SubjectId == id)
+                .Select(st => st.TeacherId);
+            return teacherIds;
+        }
     }
 }

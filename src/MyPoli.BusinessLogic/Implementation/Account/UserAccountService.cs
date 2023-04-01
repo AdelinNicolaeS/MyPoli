@@ -50,6 +50,7 @@ namespace MyPoli.BusinessLogic.Implementation.Account
                 Email = person.Email,
                 FirstName = person.FirstName,
                 LastName = person.LastName,
+                UnreadNotifications = person.UnreadNotifications,
                 IsAuthenticated = true,
                 Roles = person.PersonRoles.Select(ur => ur.Role.Name).ToList()
             };

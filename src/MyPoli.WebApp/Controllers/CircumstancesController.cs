@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyPoli.BusinessLogic.Implementation.CircumstanceOperations;
 using MyPoli.BusinessLogic.Implementation.Grades;
+using MyPoli.BusinessLogic.Implementation.NotificationOperations;
 using MyPoli.BusinessLogic.Models;
 using MyPoli.Common;
 using MyPoli.Common.DTOs;
@@ -23,11 +24,13 @@ namespace MyPoli.WebApp.Controllers
     {
         private readonly CircumstanceService circumstanceService;
         private readonly GradeService gradeService;
+        private readonly NotificationService notificationService;
 
-        public CircumstancesController(ControllerDependencies dependencies, CircumstanceService _service, GradeService _gradeService) : base(dependencies)
+        public CircumstancesController(ControllerDependencies dependencies, CircumstanceService _circumstanceService, GradeService _gradeService, NotificationService _notificationService) : base(dependencies)
         {
-            circumstanceService = _service;
+            circumstanceService = _circumstanceService;
             gradeService = _gradeService;
+            notificationService = _notificationService;
         }     
         // GET: Circumstances
         public IActionResult Index(string sortOrder, string currentFilter, string SearchString, int? pageNumber)
@@ -204,6 +207,7 @@ namespace MyPoli.WebApp.Controllers
         public IActionResult AcceptCircumstance(Circumstance circumstance)
         {
             circumstanceService.AcceptCircumstance(circumstance.Id);
+            notificationService.AcceptCircumstance(circumstance.Id);
             return RedirectToAction(nameof(Index));
         }
     }

@@ -11,6 +11,7 @@ using MyPoli.Common;
 using MyPoli.Entities;
 using MyPoli.BusinessLogic.Models;
 using MyPoli.WebApp.Code.Base;
+using MyPoli.BusinessLogic.Implementation.NotificationOperations;
 
 namespace MyPoli.WebApp.Controllers
 {
@@ -20,12 +21,13 @@ namespace MyPoli.WebApp.Controllers
         private readonly GradeService gradeService;
         private readonly SubjectService subjectService;
         private readonly StudentService studentService;
-
-        public GradesController(ControllerDependencies dependencies, GradeService gradeService, SubjectService subjectService, StudentService studentService) : base(dependencies)
+        private readonly NotificationService notificationService;
+        public GradesController(ControllerDependencies dependencies, GradeService gradeService, SubjectService subjectService, StudentService studentService, NotificationService notificationService) : base(dependencies)
         {
             this.gradeService = gradeService;
             this.subjectService = subjectService;
             this.studentService = studentService;
+            this.notificationService = notificationService;
         }
 
 
@@ -118,6 +120,7 @@ namespace MyPoli.WebApp.Controllers
             if (ModelState.IsValid)
             {
                 gradeService.AddGradeFromModel(gradeVM, CurrentUser.Id);
+                notificationService.CreateGradeNotification(gradeVM.IdStudent);
                 return RedirectToAction(nameof(Index));
             }
             gradeVM.StudentIds = new SelectList(gradeService.GetStudentsOneName(), "Value", "Text");

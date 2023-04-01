@@ -337,5 +337,9 @@ namespace MyPoli.WebApp.Controllers
             return View(PaginatedList<Grade>.Create(grades, pageNumber ?? 1, Utils.PageSize));
         }
 
+        public IActionResult Ceva()
+        {
+            return View();
+        }
     }
 }

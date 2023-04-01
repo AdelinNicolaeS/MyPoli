@@ -1,0 +1,6 @@
+﻿.card-transition {
+    /* initial background color */
+    background-color: #FFFFFF;
+    /* add a transition to the background color property */
+    transition: background-color 1s ease-in-out;
+}

@@ -45,8 +45,8 @@ namespace MyPoli.DataAccess
         public virtual DbSet<Circumstance> Circumstances { get; set; }
         public virtual DbSet<Feedback> Feedbacks { get; set; }
         public virtual DbSet<BadWord> BadWords { get; set; }
-        
-        
+        public virtual DbSet<Notification> Notifications { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -55,6 +55,7 @@ namespace MyPoli.DataAccess
                 //optionsBuilder.UseSqlServer("Data Source=ASTANCA;Initial Catalog=MyPoli;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
                 optionsBuilder.UseSqlServer("Data Source=DESKTOP-T2SS4A8;Initial Catalog=MyPoli;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             }
+            optionsBuilder.LogTo(Console.WriteLine);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -466,6 +467,26 @@ namespace MyPoli.DataAccess
                 entity.Property(e => e.Value)
                     .IsRequired()
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<NotificationType>(entity =>
+            {
+                entity.ToTable("NotificationType");
+                entity.Property(e => e.Value)
+                    .IsRequired();
+            });
+            modelBuilder.Entity<Notification>(entity =>
+            {
+                entity.ToTable("Notification");
+                entity.Property(n => n.Id).ValueGeneratedNever();
+                entity.HasOne(n => n.NotificationType)
+                        .WithMany(nt => nt.Notifications)
+                        .HasForeignKey(n => n.NotificationTypeId)
+                        .HasConstraintName("FK_Notification_NotificationType_NotificationTypeId");
+                entity.HasOne(n => n.Person)
+                        .WithMany(p => p.Notifications)
+                        .HasForeignKey(n => n.PersonId)
+                        .HasConstraintName("FK_Notification_Person_PersonId");
             });
 
             OnModelCreatingPartial(modelBuilder);

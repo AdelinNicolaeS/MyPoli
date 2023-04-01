@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/MyStyle.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <header>
@@ -35,38 +36,43 @@
                         </li>
                     </ul>
                 </div>
+
                 <div>
                     @if (CurrentUser.IsAuthenticated)
                     {
-
                         <div class="dropdown dropright">
 
                             <button type="button" class="btn btn-new" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 @if (CurrentUser.Roles.Contains("Student"))
                                 {
-                                    <div><i class="fas fa-user-graduate"></i> @CurrentUser.FirstName @CurrentUser.LastName</div>
+                                    <div><i class="fas fa-user-graduate"></i> @CurrentUser.FirstName @CurrentUser.LastName </div>
 
                                 }
                                 else if (CurrentUser.Roles.Contains("Teacher"))
                                 {
-                                    <div><i class="fas fa-chalkboard-teacher"></i> @CurrentUser.FirstName @CurrentUser.LastName</div>
+                            <div><i class="fas fa-chalkboard-teacher"></i> @CurrentUser.FirstName @CurrentUser.LastName </div>
                                 }
                                 else
                                 {
-                                    <div><i class="fas fa-user-shield"></i> @CurrentUser.FirstName @CurrentUser.LastName</div>
+                            <div><i class="fas fa-user-shield"></i> @CurrentUser.FirstName @CurrentUser.LastName </div>
                                 }
 
                             </button>
+
                             <div class="dropdown-menu">
-                                @*<a class="dropdown-item" asp-controller="Students" asp-action="Index">See Students</a>
-                                    <a class="dropdown-item" asp-controller="Subjects" asp-action="Index">See Subjects</a>
-                                    <a class="dropdown-item" asp-controller="Teachers" asp-action="Index">See Teachers</a>
-                                    <a class="dropdown-item" asp-controller="Groups" asp-action="Index">See Groups</a>
-                                    <a class="dropdown-item" asp-controller="Grades" asp-action="Index">See Grades</a>
-                                    <a class="dropdown-item" asp-controller="Certificates" asp-action="Index">See Certificates</a>
-                                    <a class="dropdown-item" asp-controller="Theses" asp-action="Index">See Theses</a>
-                                    <a class="dropdown-item" asp-controller="Circumstances" asp-action="Index">See Circumstances</a>*@
-                                <a class="dropdown-item" asp-controller="UserAccount" asp-action="ChangePassword">
+                                @if (CurrentUser.Roles.Contains("Student"))
+                                {
+                                    <a class="dropdown-item" asp-controller="Students" asp-action="Details" asp-route-id="@CurrentUser.Id">
+                                        <i class="fas fa-regular fa-address-card"></i> Your profile
+                                    </a>
+                                }
+                                else if (CurrentUser.Roles.Contains("Teacher"))
+                                {
+                                    <a class="dropdown-item" asp-controller="Teachers" asp-action="Details" asp-route-id="@CurrentUser.Id">
+                                        <i class="fas fa-regular fa-address-card"></i> Your profile
+                                    </a>
+                                }
+                                <a class="dropdown-item" asp-controller="UserAccount" asp-action="ChangePassword" >
                                     <i class="fas fa-unlock-alt"></i> Change password
                                 </a>
                                 <div class="dropdown-divider"></div>

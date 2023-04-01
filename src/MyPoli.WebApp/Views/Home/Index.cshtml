@@ -3,8 +3,9 @@
     ViewData["Title"] = "Home Page";
 }
 <head>
-    <link rel="stylesheet" href="~/css/site.css">
-    <link rel="stylesheet" href="~/css/MyStyle.css">
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/MyStyle.css" />
+    <link rel="stylesheet" href="~/css/cardtransition.css" type="text/css" />
 </head>
 @if (!CurrentUser.IsAuthenticated)
 {
@@ -20,20 +21,59 @@ else if (CurrentUser.Roles.Contains("Student"))
 {
     <div class="row">
         <div class="col-md-3">
-            <div class="card text-center" >
+            @if (CurrentUser.UnreadNotifications != 0)
+            {
+                <div class="card text-center card-transition">
+                    <div class="myFuckingClass">
+                        <img class="card-img-top others" src="http://blog.cloudflare.com/content/images/2021/12/image1-63.png" alt="Card image cap">
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Check your notifications</h5>
+                        <p class="card-text">
+                            @if (CurrentUser.UnreadNotifications == 1)
+                            {
+                                <a>You have 1 notification pending!</a>
+                            }
+                            else
+                            {
+                                <a>You have @CurrentUser.UnreadNotifications notifications pending!</a>
+                            }
+                        </p>
+                        <a asp-controller="Notifications" asp-action="Index" class="mt-auto btn btn-lg btn-primary">Notifications</a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="card text-center">
+                    <div class="myFuckingClass">
+                        <img class="card-img-top others" src="http://blog.cloudflare.com/content/images/2021/12/image1-63.png" alt="Card image cap">
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Check your notifications</h5>
+                        <p class="card-text">
+                           You have no notification pending!
+                        </p>
+                        <a asp-controller="Notifications" asp-action="Index" class="mt-auto btn btn-lg btn-primary">Notifications</a>
+                    </div>
+                </div>
+            }
+        </div>
+        <!--<div class="col-md-3">
+            <div class="card text-center">
                 <div class="myFuckingClass">
                     <img class="card-img-top others" src="https://www.qs.com/wp-content/uploads/2016/05/shutterstock_218235004.jpg" alt="Card image cap">
                 </div>
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">Your profile</h5>
                     <p class="card-text">Choose what you want to do with your profile.</p>
-                    <a asp-controller="Students" asp-action="Details" asp-route-id="@CurrentUser.Id" class="mt-auto btn btn-lg btn-primary">See profile</a>
-                    @*<a asp-controller="Students" asp-action="EditYourself" class="align-self-end mt-auto btn btn-primary">Edit profile</a>*@
-                </div>
+                    <a asp-controller="Students" asp-action="Details" asp-route-id="@CurrentUser.Id" class="mt-auto btn btn-lg btn-primary">See profile</a>-->
+        @*<a asp-controller="Students" asp-action="EditYourself" class="align-self-end mt-auto btn btn-primary">Edit profile</a>*@
+        <!--</div>
             </div>
-        </div>
+        </div>-->
         <div class="col-md-3">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
                     <img class="card-img-top others" src="https://www.gannett-cdn.com/-mm-/900b93cfc33a420aa612b7d27f5759d6be80e12e/c=0-45-714-448/local/-/media/2016/01/06/Nashville/Nashville/635876956564303673-grades.jpg?width=2560" alt="Card image cap">
                 </div>
@@ -45,7 +85,7 @@ else if (CurrentUser.Roles.Contains("Student"))
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
                     <img class="card-img-top others" src="https://leverageedu.com/blog/wp-content/uploads/2019/11/List-of-Courses-after-10th-Standard-800x500.png" alt="Card image cap">
                 </div>
@@ -57,7 +97,7 @@ else if (CurrentUser.Roles.Contains("Student"))
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
                     <img class="card-img-top others" src="https://assets.website-files.com/5ee82250794fdd7a8a9484a1/5ee82250794fdd1b5d9488da_5ea7b1a77335641c50902dec_Rex-Blog-UserGroups.png" alt="Card image cap">
                 </div>
@@ -74,7 +114,7 @@ else if (CurrentUser.Roles.Contains("Student"))
 
     <div class="row">
         <div class="col-md-3">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
                     <img class="card-img-top others" src="~/img/proof.png" alt="Card image cap">
                 </div>
@@ -87,7 +127,7 @@ else if (CurrentUser.Roles.Contains("Student"))
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
                     <img class="card-img-top others" src="http://www.enhancemywriting.com/wp-content/uploads/2017/10/how-to-write-a-literature-review-dissertation.png" alt="Card image cap">
                 </div>
@@ -99,7 +139,7 @@ else if (CurrentUser.Roles.Contains("Student"))
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
                     <img class="card-img-top others" @*src="https://i.ytimg.com/vi/3uWMSWaEy5w/maxresdefault.jpg"*@ src="https://content.thriveglobal.com/wp-content/uploads/2020/06/dissatisfaction.jpg?w=1550" alt="Card image cap">
                 </div>
@@ -112,7 +152,7 @@ else if (CurrentUser.Roles.Contains("Student"))
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
                     <img class="card-img-top others" src="https://d3t70bohx4vuj7.cloudfront.net/VQFywGoePAD-dwxqJLELWEMJcvNlpYfEN18o1b2jgt4/resize:fill:500:0/gravity:ce/aHR0cHM6Ly9kMnNsY3cza2lwNnFtay5jbG91ZGZyb250Lm5ldC9tYXJrZXRpbmcvYmxvZy8yMDE5UTEvZ2l2aW5nLWZlZWRiYWNrL2hvdy10by1naXZlLWZlZWRiYWNrLWhlYWRlckAyeC5wbmc" alt="Card image cap">
                 </div>
@@ -129,20 +169,46 @@ else if (CurrentUser.Roles.Contains("Teacher"))
 {
     <div class="row">
         <div class="col-md-3">
-            <div class="card text-center" >
-                <div class="myFuckingClass">
-                    <img class="card-img-top others" src="https://www.counselmagazine.co.uk/images/uploadedfiles/2897f0487328c42b43a0913fd1cebaa932bc.png?sfvrsn=dabd9f37_3" alt="Card image cap">
+            @if (CurrentUser.UnreadNotifications != 0)
+            {
+                <div class="card text-center card-transition">
+                    <div class="myFuckingClass">
+                        <img class="card-img-top others" src="http://blog.cloudflare.com/content/images/2021/12/image1-63.png" alt="Card image cap">
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Check your notifications</h5>
+                        <p class="card-text">
+                            @if (CurrentUser.UnreadNotifications == 1)
+                            {
+                                <a>You have 1 notification pending!</a>
+                            }
+                            else
+                            {
+                                <a>You have @CurrentUser.UnreadNotifications notifications pending!</a>
+                            }
+                        </p>
+                        <a asp-controller="Notifications" asp-action="Index" class="mt-auto btn btn-lg btn-primary">Notifications</a>
+                    </div>
                 </div>
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">Your profile</h5>
-                    <p class="card-text">Choose what you want to do with your profile.</p>
-                    <a asp-controller="Teachers" asp-action="Details" asp-route-id="@CurrentUser.Id" class="mt-auto btn btn-lg btn-primary">See profile</a>
-                    @*<a asp-controller="Students" asp-action="EditYourself" class="align-self-end mt-auto btn btn-primary">Edit profile</a>*@
+            }
+            else
+            {
+                <div class="card text-center">
+                    <div class="myFuckingClass">
+                        <img class="card-img-top others" src="http://blog.cloudflare.com/content/images/2021/12/image1-63.png" alt="Card image cap">
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Check your notifications</h5>
+                        <p class="card-text">
+                            You have no notification pending!
+                        </p>
+                        <a asp-controller="Notifications" asp-action="Index" class="mt-auto btn btn-lg btn-primary">Notifications</a>
+                    </div>
                 </div>
-            </div>
+            }
         </div>
         <div class="col-md-3">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
                     <img class="card-img-top others" src="https://www.gannett-cdn.com/-mm-/900b93cfc33a420aa612b7d27f5759d6be80e12e/c=0-45-714-448/local/-/media/2016/01/06/Nashville/Nashville/635876956564303673-grades.jpg?width=2560" alt="Card image cap">
                 </div>
@@ -154,7 +220,7 @@ else if (CurrentUser.Roles.Contains("Teacher"))
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
                     <img class="card-img-top others" src="https://leverageedu.com/blog/wp-content/uploads/2019/11/List-of-Courses-after-10th-Standard-800x500.png" alt="Card image cap">
                 </div>
@@ -166,7 +232,7 @@ else if (CurrentUser.Roles.Contains("Teacher"))
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
                     <img class="card-img-top others" src="https://assets.website-files.com/5ee82250794fdd7a8a9484a1/5ee82250794fdd1b5d9488da_5ea7b1a77335641c50902dec_Rex-Blog-UserGroups.png" alt="Card image cap">
                 </div>
@@ -182,7 +248,7 @@ else if (CurrentUser.Roles.Contains("Teacher"))
     <br />
     <div class="row">
         <div class="col-md-3">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
                     <img class="card-img-top others" src="https://media-cldnry.s-nbcnews.com/image/upload/newscms/2020_44/1625478/teachers-abbey-jc-201026-1625478.jpg" alt="Card image cap">
                 </div>
@@ -194,7 +260,7 @@ else if (CurrentUser.Roles.Contains("Teacher"))
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
                     <img class="card-img-top others" src="http://www.enhancemywriting.com/wp-content/uploads/2017/10/how-to-write-a-literature-review-dissertation.png" alt="Card image cap">
                 </div>
@@ -206,7 +272,7 @@ else if (CurrentUser.Roles.Contains("Teacher"))
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
                     <img class="card-img-top others" @*src="https://i.ytimg.com/vi/3uWMSWaEy5w/maxresdefault.jpg"*@ src="https://content.thriveglobal.com/wp-content/uploads/2020/06/dissatisfaction.jpg?w=1550" alt="Card image cap">
                 </div>
@@ -218,7 +284,7 @@ else if (CurrentUser.Roles.Contains("Teacher"))
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
                     <img class="card-img-top others" src="https://d3t70bohx4vuj7.cloudfront.net/VQFywGoePAD-dwxqJLELWEMJcvNlpYfEN18o1b2jgt4/resize:fill:500:0/gravity:ce/aHR0cHM6Ly9kMnNsY3cza2lwNnFtay5jbG91ZGZyb250Lm5ldC9tYXJrZXRpbmcvYmxvZy8yMDE5UTEvZ2l2aW5nLWZlZWRiYWNrL2hvdy10by1naXZlLWZlZWRiYWNrLWhlYWRlckAyeC5wbmc" alt="Card image cap">
                 </div>
@@ -235,9 +301,9 @@ else if (CurrentUser.Roles.Contains("Secretary"))
 {
     <div class="row">
         <div class="col-md-4">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
-                    <img class="card-img-top secretary" src="https://campustechnology.com/-/media/EDU/CampusTechnology/2021-images/20210121collegestudents.jpg"  @*src="https://www.qs.com/wp-content/uploads/2016/05/shutterstock_218235004.jpg"*@ alt="Card image cap">
+                    <img class="card-img-top secretary" src="https://campustechnology.com/-/media/EDU/CampusTechnology/2021-images/20210121collegestudents.jpg" @*src="https://www.qs.com/wp-content/uploads/2016/05/shutterstock_218235004.jpg"*@ alt="Card image cap">
                 </div>
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">Students</h5>
@@ -247,7 +313,7 @@ else if (CurrentUser.Roles.Contains("Secretary"))
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
                     <img class="card-img-top secretary" src="https://media-cldnry.s-nbcnews.com/image/upload/newscms/2020_44/1625478/teachers-abbey-jc-201026-1625478.jpg" alt="Card image cap">
                 </div>
@@ -259,9 +325,9 @@ else if (CurrentUser.Roles.Contains("Secretary"))
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
-                    <img class="card-img-top secretary"  src="https://leverageedu.com/blog/wp-content/uploads/2019/11/List-of-Courses-after-10th-Standard-800x500.png" alt="Card image cap">
+                    <img class="card-img-top secretary" src="https://leverageedu.com/blog/wp-content/uploads/2019/11/List-of-Courses-after-10th-Standard-800x500.png" alt="Card image cap">
                 </div>
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">Courses</h5>
@@ -270,13 +336,13 @@ else if (CurrentUser.Roles.Contains("Secretary"))
                 </div>
             </div>
         </div>
-        
+
     </div>
     <div class="w-100"></div>
     <br />
     <div class="row">
         <div class="col-md-4">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
                     <img class="card-img-top secretary" src="https://assets.website-files.com/5ee82250794fdd7a8a9484a1/5ee82250794fdd1b5d9488da_5ea7b1a77335641c50902dec_Rex-Blog-UserGroups.png" alt="Card image cap">
                 </div>
@@ -288,9 +354,9 @@ else if (CurrentUser.Roles.Contains("Secretary"))
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
-                    <img class="card-img-top secretary"  src="~/img/proof.png" alt="Card image cap">
+                    <img class="card-img-top secretary" src="~/img/proof.png" alt="Card image cap">
                 </div>
 
                 <div class="card-body d-flex flex-column">
@@ -301,9 +367,9 @@ else if (CurrentUser.Roles.Contains("Secretary"))
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
-                    <img class="card-img-top secretary"  src="https://www.gannett-cdn.com/-mm-/900b93cfc33a420aa612b7d27f5759d6be80e12e/c=0-45-714-448/local/-/media/2016/01/06/Nashville/Nashville/635876956564303673-grades.jpg?width=2560" alt="Card image cap">
+                    <img class="card-img-top secretary" src="https://www.gannett-cdn.com/-mm-/900b93cfc33a420aa612b7d27f5759d6be80e12e/c=0-45-714-448/local/-/media/2016/01/06/Nashville/Nashville/635876956564303673-grades.jpg?width=2560" alt="Card image cap">
                 </div>
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">Grades</h5>
@@ -317,9 +383,9 @@ else if (CurrentUser.Roles.Contains("Secretary"))
     <br />
     <div class="row">
         <div class="col-md-4">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
-                    <img class="card-img-top secretary"  src="http://www.enhancemywriting.com/wp-content/uploads/2017/10/how-to-write-a-literature-review-dissertation.png" alt="Card image cap">
+                    <img class="card-img-top secretary" src="http://www.enhancemywriting.com/wp-content/uploads/2017/10/how-to-write-a-literature-review-dissertation.png" alt="Card image cap">
                 </div>
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">Theses</h5>
@@ -329,7 +395,7 @@ else if (CurrentUser.Roles.Contains("Secretary"))
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
                     <img class="card-img-top secretary" src="https://content.thriveglobal.com/wp-content/uploads/2020/06/dissatisfaction.jpg?w=1550" alt="Card image cap">
                 </div>
@@ -341,7 +407,7 @@ else if (CurrentUser.Roles.Contains("Secretary"))
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card text-center" >
+            <div class="card text-center">
                 <div class="myFuckingClass">
                     <img class="card-img-top secretary" src="https://d3t70bohx4vuj7.cloudfront.net/VQFywGoePAD-dwxqJLELWEMJcvNlpYfEN18o1b2jgt4/resize:fill:500:0/gravity:ce/aHR0cHM6Ly9kMnNsY3cza2lwNnFtay5jbG91ZGZyb250Lm5ldC9tYXJrZXRpbmcvYmxvZy8yMDE5UTEvZ2l2aW5nLWZlZWRiYWNrL2hvdy10by1naXZlLWZlZWRiYWNrLWhlYWRlckAyeC5wbmc" alt="Card image cap">
                 </div>
@@ -354,6 +420,20 @@ else if (CurrentUser.Roles.Contains("Secretary"))
         </div>
     </div>
 }
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var cards = document.querySelectorAll('.card-transition');
+        var currentColor = 0;
+        var colors = ['#FFFFFF', '#FF5733'];
+        setInterval(function () {
+            currentColor = (currentColor + 1) % colors.length;
+            for (var i = 0; i < cards.length; i++) {
+                cards[i].style.backgroundColor = colors[currentColor];
+            }
+        }, 1000);
+    });
+</script>
 
 @*<script src="./../jquery.js" type="text/javascript"></script>
     <script src="./../progress.js" type="text/javascript"></script>

@@ -93,6 +93,7 @@ namespace MyPoli.WebApp.Controllers
                 new Claim("Email", user.Email),
                 new Claim("FirstName", user.FirstName),
                 new Claim("LastName", user.LastName),
+                new Claim("UnreadNotifications", user.UnreadNotifications.ToString()),
                 //new Claim("Role", user.Role),
                 //new Claim("Streak", user.Streak.ToString())
             };

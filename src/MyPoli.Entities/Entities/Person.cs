@@ -8,6 +8,10 @@ namespace MyPoli.Entities
 {
     public partial class Person : IEntity
     {
+        public Person()
+        {
+            Notifications = new HashSet<Notification>();
+        }
         public Guid Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -21,12 +25,14 @@ namespace MyPoli.Entities
         public Guid GenderId { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime? LastLogin { get; set; }
+        public int UnreadNotifications { get; set; }
         public virtual Gender Gender { get; set; }
         public virtual Nationality Nationality { get; set; }
         public virtual Secretary Secretary { get; set; }
         public virtual Student Student { get; set; }
         public virtual Teacher Teacher { get; set; }
         public virtual ICollection<PersonRole> PersonRoles { get; set; }
+        public virtual ICollection<Notification> Notifications { get; set; }
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using MyPoli.BusinessLogic.Implementation.NotificationOperations;
 using MyPoli.WebApp.Code.Base;
 using MyPoli.WebApp.Models;
 
@@ -7,14 +8,17 @@ namespace MyPoli.WebApp.Controllers
 {
     public class HomeController : BaseController
     {
-        public HomeController(ControllerDependencies dependencies)
+        private readonly NotificationService notificationService;
+
+        public HomeController(ControllerDependencies dependencies, NotificationService notificationService)
            : base(dependencies)
         {
-
+            this.notificationService = notificationService;
         }
 
         public IActionResult Index()
         {
+            notificationService.RecalculateCurrentUserNotifications();
             return View();
         }
 
