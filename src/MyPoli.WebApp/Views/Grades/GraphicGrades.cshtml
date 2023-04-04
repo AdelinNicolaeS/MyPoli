@@ -1,0 +1,75 @@
+﻿@model MyPoli.BusinessLogic.Models.GraphicVM
+@inject MyPoli.Common.DTOs.CurrentUserDto CurrentUser
+
+<div>
+    <canvas id="myChart"></canvas>
+
+    @if (CurrentUser.Roles.Contains("Teacher"))
+    {
+        <p>
+            This is a chart with all the grades you offered to your students.
+        </p>
+        <p>
+            <a asp-action="Create" class="btn btn-outline-primary">Create New</a>
+            <a asp-action="Index" class="btn btn-outline-primary">Back to Full List</a>
+        </p>
+    }
+    else if (CurrentUser.Roles.Contains("Secretary"))
+    {
+        <p>
+            This is a chart with all the grades you offered to the students.
+        </p>
+        <p>
+            <a asp-action="Index" class="btn btn-outline-primary">Back to Full List</a>
+        </p>
+    }
+    else
+    {
+        <p>
+            This is a chart with all your grades.
+        </p>
+        <p>
+            <a asp-controller="Students" asp-action="Catalog" class="btn btn-outline-primary">Back to Full List</a>
+        </p>
+    }
+
+</div>
+
+@section scripts {
+    <link rel="stylesheet" href="~/css/myChart.css" />
+    <script>
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+                    datasets: [{
+                        label: 'Grades',
+                        data: @Html.Raw(Json.Serialize(Model.Grades)),
+                        backgroundColor: [
+                        @foreach (var color in Model.BackgroundColors)
+                        {
+                            <text>'@color',</text>
+                        }
+                    ],
+                    borderColor: [
+                        @foreach (var color in Model.BorderColors)
+                        {
+                            <text>'@color',</text>
+                        }
+                    ],
+                    borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+    </script>
+}

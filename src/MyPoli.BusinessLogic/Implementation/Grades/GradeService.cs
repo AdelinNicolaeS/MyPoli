@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -23,7 +21,7 @@ namespace MyPoli.BusinessLogic.Implementation.Grades
             this.gradeValidator = new GradeValidator(serviceDependencies);
         }
 
-        public IQueryable<Grade> IndexToWrite(string sortOrder, string searchString, CurrentUserDto currentUser)
+        public IQueryable<Grade> IndexToWrite(string sortOrder, string searchString)
         {
             IQueryable<Grade> grades;
             var grades1 = UnitOfWork.Grades.Get()
@@ -35,10 +33,10 @@ namespace MyPoli.BusinessLogic.Implementation.Grades
                    .ThenInclude(ss => ss.Subject)
                .Where(g => !g.StudentSubject.Student.Person.IsDeleted && !g.StudentSubject.Subject.IsDeleted)
                ;
-            if (currentUser.Roles.Contains("Teacher"))
+            if (CurrentUser.Roles.Contains("Teacher"))
             {
-                var teacher = GetTeacherById(currentUser.Id);
-                grades1 = grades1.Where(g => g.IdTeacher == currentUser.Id);
+                var teacher = GetTeacherById(CurrentUser.Id);
+                grades1 = grades1.Where(g => g.IdTeacher == CurrentUser.Id);
             }
 
             if (!String.IsNullOrEmpty(searchString))
@@ -60,6 +58,30 @@ namespace MyPoli.BusinessLogic.Implementation.Grades
                 "grade_desc" => grades.OrderByDescending(g => g.GradeValue),
                 _ => grades.OrderBy(g => g.StudentSubject.Student.Person.FirstName).ThenBy(g => g.StudentSubject.Student.Person.LastName),
             };
+        }
+
+        public List<int> GetGradeValues()
+        {
+            var grades = UnitOfWork.Grades.Get()
+               .Where(e => !e.IsDeleted)
+               .Where(g => !g.StudentSubject.Student.Person.IsDeleted && !g.StudentSubject.Subject.IsDeleted)
+               ;
+            if (CurrentUser.Roles.Contains("Teacher"))
+            {
+                grades = grades.Where(g => g.IdTeacher == CurrentUser.Id);
+            } else if(CurrentUser.Roles.Contains("Student"))
+            {
+                grades = grades.Where(g => g.IdStudent == CurrentUser.Id);
+            }
+
+            var gradeValues = grades.Select(g => g.GradeValue).ToList();
+            
+            int[] occurences = new int[10];
+            foreach(var grade in gradeValues)
+            {
+                occurences[grade - 1]++;
+            }
+            return occurences.ToList();
         }
 
         public IQueryable<Grade> IndexToWriteArchive(string sortOrder, string searchString, CurrentUserDto currentUser)
@@ -169,7 +191,7 @@ namespace MyPoli.BusinessLogic.Implementation.Grades
                     IdStudent = gradeVM.IdStudent,
                     IdSubject = gradeVM.IdSubject,
                     IdTeacher = idTeacher,
-                    IdGroup = gradeVM.IdGroup,
+                    //IdGroup = gradeVM.IdGroup,
                     IsDeleted = false
                 };
                 uow.Grades.Insert(grade);
@@ -214,12 +236,10 @@ namespace MyPoli.BusinessLogic.Implementation.Grades
                 .Select(ss => ss.Subject);
         }
 
-        public IIncludableQueryable<Student, Person> GetStudentsOfSubjectAndGroup(Guid idSubject, Guid idGroup, CurrentUserDto currentUser)
+        public IIncludableQueryable<Student, Person> GetStudentsOfSubjectAndGroup(Guid idSubject)
         {
-            var teacher = GetTeacherById(currentUser.Id);
-           // var groupIds = teacher.TeacherGroups.Select(tg => tg.IdGroup);
             var students = UnitOfWork.Students.Get()
-                .Where(s => s.GroupId == idGroup)
+            //    .Where(s => s.GroupId == idGroup)
                 .Include(s => s.StudentSubjects)
                     .ThenInclude(ss => ss.Grade)
                 .Where(s => s.StudentSubjects.Select(ss => ss.IdSubject).Contains(idSubject))

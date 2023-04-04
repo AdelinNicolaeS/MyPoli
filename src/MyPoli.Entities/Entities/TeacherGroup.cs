@@ -10,7 +10,7 @@ namespace MyPoli.Entities
     {
         public TeacherGroup()
         {
-            Grades = new HashSet<Grade>();
+           // Grades = new HashSet<Grade>();
         }
 
         public Guid IdTeacher { get; set; }
@@ -18,6 +18,6 @@ namespace MyPoli.Entities
 
         public virtual Group IdGroupNavigation { get; set; }
         public virtual Teacher IdTeacherNavigation { get; set; }
-        public virtual ICollection<Grade> Grades { get; set; }
+        //public virtual ICollection<Grade> Grades { get; set; }
     }
 }

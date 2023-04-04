@@ -11,17 +11,19 @@
 
 @if (CurrentUser.Roles.Contains("Teacher"))
 {
-    <p>
-        <a asp-action="Create" class="btn btn-outline-primary">Create New</a>
-        <a asp-action="Index" class="btn btn-outline-primary">Back to Full List</a>
-        <a asp-action="Archive" class="btn btn-outline-primary">Archive</a>
-    </p>
+<p>
+    <a asp-action="Create" class="btn btn-outline-primary">Create New</a>
+    <a asp-action="Index" class="btn btn-outline-primary">Back to Full List</a>
+    <a asp-action="Archive" class="btn btn-outline-primary">Archive</a>
+    <a asp-action="GraphicGrades" class="btn btn-outline-primary">Plot the grades</a>
+</p>
 }
 else
 {
 <p>
     <a asp-action="Index" class="btn btn-outline-primary">Back to Full List</a>
     <a asp-action="Archive" class="btn btn-outline-primary">Archive</a>
+    <a asp-action="GraphicGrades" class="btn btn-outline-primary">Plot the grades</a>
 </p>
 }
 

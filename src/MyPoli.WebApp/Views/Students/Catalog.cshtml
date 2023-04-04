@@ -41,7 +41,8 @@
     </tbody>
 </table>
 <div>
-    <a asp-controller="Home" asp-action="Index" class="btn btn-primary float-right">Home</a>
+    <a asp-controller="Grades" asp-action="GraphicGrades" class="btn btn-primary float-right">Plot the grades</a>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-primary float-right" style="margin-right: 10px;">Home</a>
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

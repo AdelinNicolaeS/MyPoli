@@ -337,6 +337,24 @@ namespace MyPoli.WebApp.Controllers
             return View(PaginatedList<Grade>.Create(grades, pageNumber ?? 1, Utils.PageSize));
         }
 
+        public IActionResult GraphicGrades()
+        {
+            var grades = gradeService.GetGradeValues();
+            var backgroundColors = new List<string>();
+            var borderColors = new List<string>();
+
+            // Generate 10 random background colors and border colors
+            var random = new Random();
+            for (int i = 0; i < 10; i++)
+            {
+                var color = $"rgba({random.Next(0, 255)}, {random.Next(0, 255)}, {random.Next(0, 255)}, 0.6)";
+                backgroundColors.Add(color);
+                borderColors.Add(color.Replace("0.6", "1"));
+            }
+
+            return View(new GraphicVM(grades, backgroundColors, borderColors));
+        }
+
         public IActionResult Ceva()
         {
             return View();

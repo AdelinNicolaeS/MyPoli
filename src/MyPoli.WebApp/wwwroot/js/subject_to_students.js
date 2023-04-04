@@ -1,13 +1,11 @@
 ﻿$(document).ready(function () {
-    $('#IdSubject, #IdGroup').on("change", function () {
+    $('#IdSubject').on("change", function () {
         var IdSubject = $('#IdSubject').val();
-        var IdGroup = $('#IdGroup').val();
         $.ajax({
             url: '/Grades/GetStudentsOfSubjectAndGroup',
             type: 'GET',
             data: {
                 IdSubject: IdSubject,
-                IdGroup: IdGroup
             },
             success: manageStudents
         });

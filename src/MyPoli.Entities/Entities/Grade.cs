@@ -14,12 +14,10 @@ namespace MyPoli.Entities
         public Guid IdStudent { get; set; }
 
         public Guid IdTeacher { get; set; }
-        public Guid IdGroup { get; set; }
         public int GradeValue { get; set; }
 
         public virtual StudentSubject StudentSubject { get; set; }
         public virtual SubjectTeacher SubjectTeacher { get; set; }
-        public virtual TeacherGroup TeacherGroup { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

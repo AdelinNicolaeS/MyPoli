@@ -14,7 +14,7 @@ namespace MyPoli.BusinessLogic.Models
         public int GradeValue { get; set; }
         public SelectList SubjectIds { get; set; }
         public SelectList StudentIds { get; set; }
-        public SelectList GroupIds { get; set; }
-        public Guid IdGroup { get; set; }
+       // public SelectList GroupIds { get; set; }
+       // public Guid IdGroup { get; set; }
     }
 }

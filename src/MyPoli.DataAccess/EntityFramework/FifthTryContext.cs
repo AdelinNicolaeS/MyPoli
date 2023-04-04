@@ -25,7 +25,7 @@ namespace MyPoli.DataAccess
 
         public virtual DbSet<Gender> Genders { get; set; }
         public virtual DbSet<Grade> Grades { get; set; }
-        public virtual DbSet<Group> Groups { get; set; }
+        public virtual DbSet<Group> Cohorts { get; set; }
         public virtual DbSet<Nationality> Nationalities { get; set; }
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<PersonRole> PersonRoles { get; set; }
@@ -218,11 +218,11 @@ namespace MyPoli.DataAccess
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Grade_SubjectTeacher");
 
-                entity.HasOne(g => g.TeacherGroup)
+               /* entity.HasOne(g => g.TeacherGroup)
                    .WithMany(tg => tg.Grades)
                    .HasForeignKey(g => new { g.IdTeacher, g.IdGroup })
                    .OnDelete(DeleteBehavior.ClientSetNull)
-                   .HasConstraintName("FK_Grade_TeacherGroup");
+                   .HasConstraintName("FK_Grade_TeacherGroup");*/
 
                 entity.Property(e => e.GradeValue).HasColumnName("Grade");
             });
