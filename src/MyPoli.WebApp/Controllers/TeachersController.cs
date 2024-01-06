@@ -301,7 +301,7 @@ namespace MyPoli.WebApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { Id = model.Id});
             }
             var teacher = teacherService.GetTeacherById(model.Id);
             model.FirstName = teacher.Person.FirstName;

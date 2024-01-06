@@ -25,7 +25,7 @@ namespace MyPoli.DataAccess
 
         public virtual DbSet<Gender> Genders { get; set; }
         public virtual DbSet<Grade> Grades { get; set; }
-        public virtual DbSet<Group> Cohorts { get; set; }
+        public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<Nationality> Nationalities { get; set; }
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<PersonRole> PersonRoles { get; set; }

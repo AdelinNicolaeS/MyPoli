@@ -36,7 +36,6 @@ namespace MyPoli.BusinessLogic.Implementation.FeedbackOperations
                        .ThenInclude(s => s.Person)
                .Include(g => g.StudentSubject)
                    .ThenInclude(ss => ss.Subject)
-               //.Where(g => !g.StudentSubject.Student.Person.IsDeleted && !g.StudentSubject.Subject.IsDeleted)
                ;
             if (currentUser.Roles.Contains("Teacher"))
             {

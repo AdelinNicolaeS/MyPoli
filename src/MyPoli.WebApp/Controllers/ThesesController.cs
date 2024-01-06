@@ -148,7 +148,10 @@ namespace MyPoli.WebApp.Controllers
                 try
                 {
                     thesisService.EditThesis(model, CurrentUser);
-                    notificationService.CreateThesisNotification(model.TeacherId);
+                    if(CurrentUser.Id != model.TeacherId)
+                    {
+                        notificationService.CreateThesisNotification(model.TeacherId);
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
